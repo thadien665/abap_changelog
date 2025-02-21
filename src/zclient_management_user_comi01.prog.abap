@@ -16,6 +16,12 @@ data: INPUT-FIRST_NAME type zcname,
      data(customer) = new zcl_customer(  ).
 
 
+    if sy-ucomm = 'CLEAR_BTN'.
+
+        clear: INPUT-FIRST_NAME, INPUT-LAST_NAME, INPUT-EMAIL, CUST_ID_OUTPUT.
+
+    endif.
+
     if sy-ucomm = 'CREATE_BTN'.
 
        if INPUT-FIRST_NAME is initial or INPUT-LAST_NAME is initial or INPUT-EMAIL is initial.
@@ -71,5 +77,6 @@ data: INPUT-FIRST_NAME type zcname,
             message lcx_error->record_not_found() type 'i'.
         endtry.
     endif.
+
 
 ENDMODULE.

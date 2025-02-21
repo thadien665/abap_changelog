@@ -42,29 +42,33 @@ ENDCLASS.
 CLASS zcl_customer IMPLEMENTATION.
   METHOD create_customer.
 
-    data lv_new_customer type zcust_details.
+    data: lv_new_customer type zcust_details,
+          lv_int_cust_id type i.
 
-*    select max( cust_id )
-*    from zcust_details
-*    into @data(lv_max_existing_id).
+     select min( customer_id )
+     from zcust_id_storage
+     into @data(lv_max_existing_id).
 
-     select cast( cust_id as int2 )
-     from zcust_details
-     into table @data(lt_cust_id).
+    if lv_max_existing_id is initial.
 
-     loop at lt_cust_id into data(current_id).
-        if lt_cust_id[ sy-tabix + 1 ] <> current_id + 1.
-            data(lv_max_existing_id) = lt_cust_id[ sy-tabix ].
-            exit.
-        endif.
-     endloop.
+         select max( cust_id )
+         from zcust_details
+         into lv_max_existing_id.
 
-    lv_new_customer-cust_id = lv_max_existing_id + 1.
+        lv_int_cust_id = lv_max_existing_id + 1.
+        lv_new_customer-cust_id = lv_int_cust_id.
+
+    else.
+        lv_new_customer-cust_id = lv_max_existing_id.
+        delete from zcust_id_storage where customer_id = lv_max_existing_id.
+    endif.
+
     lv_new_customer-cust_fname = lv_first_name.
     lv_new_customer-cust_lname = lv_last_name.
     lv_new_customer-cust_email = lv_email.
 
     INSERT zcust_details from lv_new_customer.
+    commit work.
 
   ENDMETHOD.
 
@@ -108,14 +112,15 @@ CLASS zcl_customer IMPLEMENTATION.
 
   METHOD delete_customer.
 
-    data lwa_customer_details type zcust_details.
+    data lwa_removed_id type zcust_id_storage.
 
 
     if lv_cust_id is not initial.
 
-        lwa_customer_details-cust_id = lv_cust_id.
+        lwa_removed_id-customer_id = lv_cust_id.
+        insert into zcust_id_storage values lwa_removed_id.
 
-        update zcust_details from lwa_customer_details.
+        delete from zcust_details where cust_id = lv_cust_id.
         Commit work.
 
     endif.
