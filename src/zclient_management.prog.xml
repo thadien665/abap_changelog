@@ -26,6 +26,15 @@
        <TYPE>SCREEN</TYPE>
        <NAME>SCREEN</NAME>
       </RPY_DYCATT>
+      <RPY_DYCATT>
+       <TYPE>CUST_CTRL</TYPE>
+       <NAME>SUBSCREEN_1</NAME>
+       <ELEMENT_OF>SCREEN</ELEMENT_OF>
+       <LINE>001</LINE>
+       <COLUMN>061</COLUMN>
+       <LENGTH>055</LENGTH>
+       <HEIGHT>016</HEIGHT>
+      </RPY_DYCATT>
      </CONTAINERS>
      <FIELDS>
       <RPY_DYFATC>
@@ -76,7 +85,7 @@
        <CONT_TYPE>SCREEN</CONT_TYPE>
        <CONT_NAME>SCREEN</CONT_NAME>
        <TYPE>TEMPLATE</TYPE>
-       <NAME>INPUT-FIRST_NAME</NAME>
+       <NAME>INPUT_FIRST_NAME</NAME>
        <TEXT>____________________</TEXT>
        <LINE>003</LINE>
        <COLUMN>018</COLUMN>
@@ -106,7 +115,7 @@
        <CONT_TYPE>SCREEN</CONT_TYPE>
        <CONT_NAME>SCREEN</CONT_NAME>
        <TYPE>TEMPLATE</TYPE>
-       <NAME>INPUT-LAST_NAME</NAME>
+       <NAME>INPUT_LAST_NAME</NAME>
        <TEXT>_______________________________</TEXT>
        <LINE>005</LINE>
        <COLUMN>018</COLUMN>
@@ -136,7 +145,7 @@
        <CONT_TYPE>SCREEN</CONT_TYPE>
        <CONT_NAME>SCREEN</CONT_NAME>
        <TYPE>TEMPLATE</TYPE>
-       <NAME>INPUT-EMAIL</NAME>
+       <NAME>INPUT_EMAIL</NAME>
        <TEXT>_______________________________</TEXT>
        <LINE>007</LINE>
        <COLUMN>018</COLUMN>

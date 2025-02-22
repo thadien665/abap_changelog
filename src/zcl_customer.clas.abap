@@ -5,34 +5,40 @@ CLASS zcl_customer DEFINITION
 
   PUBLIC SECTION.
 
-        TYPES: BEGIN OF lwa_cust_data,
+        TYPES: BEGIN OF ls_data,
                        cust_id type zcid,
                        cust_fname type zcname,
                        cust_lname type zcname,
                        cust_email type zcemail,
-                       end of lwa_cust_data.
+                       end of ls_data.
+
+        types: ls_cust_data type table of ls_data.
+
      methods:
         create_customer
             importing
                 lv_first_name type zcname
                 lv_last_name  type zcname
                 lv_email      type zcemail,
+
         search_cusomer
             importing
                 lv_first_name type zcname
                 lv_last_name  type zcname
                 lv_email      type zcemail
             exporting
-                lwa_customer_data type lwa_cust_data,
+                lt_customer_data  type ls_cust_data,
         update_customer
             importing
                 lv_first_name type zcname
                 lv_last_name  type zcname
                 lv_email      type zcemail
                 lv_cust_id type zcid,
+
         delete_customer
             importing
                 lv_cust_id type zcid.
+
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
@@ -78,6 +84,7 @@ CLASS zcl_customer IMPLEMENTATION.
     data lv_where_builder type string.
     data lt_builder_parts type table of string.
 
+
     if lv_first_name is not initial.
         append |cust_fname = @lv_first_name| to lt_builder_parts.
     endif.
@@ -94,9 +101,9 @@ CLASS zcl_customer IMPLEMENTATION.
         CONCATENATE LINES OF lt_builder_parts into lv_where_builder SEPARATED BY ' AND '.
     endif.
 
-    select single cust_id, cust_fname, cust_lname, cust_email
+    select cust_id, cust_fname, cust_lname, cust_email
     from zcust_details
-    into @lwa_customer_data
+    into table @lt_customer_data
     where (lv_where_builder).
 
   ENDMETHOD.

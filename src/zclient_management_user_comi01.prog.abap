@@ -8,61 +8,84 @@
 *----------------------------------------------------------------------*
 MODULE user_command_0100 INPUT.
 
-data: INPUT-FIRST_NAME type zcname,
-      INPUT-LAST_NAME type zcname,
-      INPUT-EMAIL type zcemail,
+"data declarations for searching fields
+
+data: INPUT_FIRST_NAME type zcname,
+      INPUT_LAST_NAME type zcname,
+      INPUT_EMAIL type zcemail,
       CUST_ID_OUTPUT type zcid.
 
-     data(customer) = new zcl_customer(  ).
+"creating ALV tab for results of search
 
+
+
+        data(lo_alv_container) = new cl_gui_custom_container( 'SUBSCREEN_1' ).
+        data(lo_alv_grid) = new cl_gui_alv_grid( lo_alv_container ).
+        data lt_fieldcatalog type lvc_t_fcat.
+
+        call FUNCTION 'LVC_FIELDCATALOG_MERGE'
+        EXPORTING
+            i_structure_name = 'zcust_details'
+        CHANGING
+            ct_fieldcat = lt_fieldcatalog.
+
+        data lt_imported_cust_data type zcl_customer=>ls_cust_data.
+*        clear lt_imported_cust_data.
+
+
+    data(customer) = new zcl_customer(  ).
 
     if sy-ucomm = 'CLEAR_BTN'.
 
-        clear: INPUT-FIRST_NAME, INPUT-LAST_NAME, INPUT-EMAIL, CUST_ID_OUTPUT.
+        clear: INPUT_FIRST_NAME, INPUT_LAST_NAME, INPUT_EMAIL, CUST_ID_OUTPUT.
 
     endif.
 
     if sy-ucomm = 'CREATE_BTN'.
 
-       if INPUT-FIRST_NAME is initial or INPUT-LAST_NAME is initial or INPUT-EMAIL is initial.
+       if INPUT_FIRST_NAME is initial or INPUT_LAST_NAME is initial or INPUT_EMAIL is initial.
             message i002(zmsgclass).
        else.
-            customer->create_customer( lv_first_name = INPUT-FIRST_NAME
-                                       lv_last_name = INPUT-LAST_NAME
-                                       lv_email = INPUT-EMAIL ).
+            customer->create_customer( lv_first_name = INPUT_FIRST_NAME
+                                       lv_last_name = INPUT_LAST_NAME
+                                       lv_email = INPUT_EMAIL ).
             MESSAGE i001(zmsgclass).
-            clear: INPUT-FIRST_NAME, INPUT-LAST_NAME, INPUT-EMAIL.
+            clear: INPUT_FIRST_NAME, INPUT_LAST_NAME, INPUT_EMAIL.
        endif.
+    endif.
 
-    elseif sy-ucomm = 'SEARCH_BTN'.
+    if sy-ucomm = 'SEARCH_BTN'.
 
-        if INPUT-FIRST_NAME is initial and INPUT-LAST_NAME is initial and INPUT-EMAIL is initial.
+
+
+        if INPUT_FIRST_NAME is initial and INPUT_LAST_NAME is initial and INPUT_EMAIL is initial.
             message s003(zmsgclass).
-        else.
+        endif.
 
-             data lwa_imported_cust_data type zcl_customer=>lwa_cust_data.
+        if lt_imported_cust_data is not initial.
+            FREE: lo_alv_grid, lo_alv_container.
+            lo_alv_container = new cl_gui_custom_container( 'SUBSCREEN_1' ).
+            lo_alv_grid = new cl_gui_alv_grid( lo_alv_container ).
+        endif.
 
         customer->search_cusomer(   exporting
-                                    lv_first_name = INPUT-FIRST_NAME
-                                    lv_last_name = INPUT-LAST_NAME
-                                    lv_email = INPUT-EMAIL
+                                    lv_first_name = INPUT_FIRST_NAME
+                                    lv_last_name = INPUT_LAST_NAME
+                                    lv_email = INPUT_EMAIL
                                     importing
-                                    lwa_customer_data = lwa_imported_cust_data ).
+                                    lt_customer_data = lt_imported_cust_data ).
 
-        INPUT-FIRST_NAME = lwa_imported_cust_data-cust_fname.
-        INPUT-LAST_NAME = lwa_imported_cust_data-cust_lname.
-        INPUT-EMAIL = lwa_imported_cust_data-cust_email.
-        CUST_ID_OUTPUT = lwa_imported_cust_data-cust_id.
-
-
+        lo_alv_grid->set_table_for_first_display( CHANGING
+                                                    it_outtab = lt_imported_cust_data
+                                                    it_fieldcatalog = lt_fieldcatalog ).
 
         endif.
 
-    elseif sy-ucomm = 'UPDATE_BTN'.
+    if sy-ucomm = 'UPDATE_BTN'.
 
-        customer->update_customer( lv_first_name = INPUT-FIRST_NAME
-                                   lv_last_name = INPUT-LAST_NAME
-                                   lv_email = INPUT-EMAIL
+        customer->update_customer( lv_first_name = INPUT_FIRST_NAME
+                                   lv_last_name = INPUT_LAST_NAME
+                                   lv_email = INPUT_EMAIL
                                    lv_cust_id = CUST_ID_OUTPUT ).
 
 
@@ -70,11 +93,12 @@ data: INPUT-FIRST_NAME type zcname,
 
     if sy-ucomm = 'DELETE_BTN'.
 
+
         try.
         customer->delete_customer( lv_cust_id = CUST_ID_OUTPUT ).
         message i004(zmsgclass).
         catch CX_SY_OPEN_SQL_DB into data(lcx_error).
-            message lcx_error->record_not_found() type 'i'.
+            message lcx_error->get_text( ) type 'i'.
         endtry.
     endif.
 
