@@ -19,15 +19,18 @@ data: INPUT_FIRST_NAME type zcname,
 
 
 
-        data(lo_alv_container) = new cl_gui_custom_container( 'SUBSCREEN_1' ).
-        data(lo_alv_grid) = new cl_gui_alv_grid( lo_alv_container ).
+*        data(lo_alv_container) = new cl_gui_custom_container( 'SUBSCREEN_1' ).
+*        data(lo_alv_grid) = new cl_gui_alv_grid( lo_alv_container ).
         data lt_fieldcatalog type lvc_t_fcat.
 
-        call FUNCTION 'LVC_FIELDCATALOG_MERGE'
-        EXPORTING
-            i_structure_name = 'zcust_details'
-        CHANGING
-            ct_fieldcat = lt_fieldcatalog.
+        lt_fieldcatalog = value #(
+            ( fieldname = 'cust_id' col_pos = 0 scrtext_m = 'id' )
+            ( fieldname = 'cust_fname' col_pos = 1 scrtext_m = 'first name' )
+            ( fieldname = 'cust_lname' col_pos = 2 scrtext_m = 'last name')
+            ( fieldname = 'cust_email' col_pos = 3 scrtext_m = 'email' )
+         ).
+
+
 
         data lt_imported_cust_data type zcl_customer=>ls_cust_data.
 *        clear lt_imported_cust_data.
@@ -57,13 +60,15 @@ data: INPUT_FIRST_NAME type zcname,
     if sy-ucomm = 'SEARCH_BTN'.
 
 
+        data(lo_alv_container) = new cl_gui_custom_container( 'SUBSCREEN_1' ).
+        data(lo_alv_grid) = new cl_gui_alv_grid( lo_alv_container ).
 
         if INPUT_FIRST_NAME is initial and INPUT_LAST_NAME is initial and INPUT_EMAIL is initial.
             message s003(zmsgclass).
         endif.
 
         if lt_imported_cust_data is not initial.
-            FREE: lo_alv_grid, lo_alv_container.
+            free: lo_alv_grid, lo_alv_container.
             lo_alv_container = new cl_gui_custom_container( 'SUBSCREEN_1' ).
             lo_alv_grid = new cl_gui_alv_grid( lo_alv_container ).
         endif.
@@ -78,6 +83,8 @@ data: INPUT_FIRST_NAME type zcname,
         lo_alv_grid->set_table_for_first_display( CHANGING
                                                     it_outtab = lt_imported_cust_data
                                                     it_fieldcatalog = lt_fieldcatalog ).
+
+*        lo_alv_grid->refresh_table_display(  ).
 
         endif.
 
