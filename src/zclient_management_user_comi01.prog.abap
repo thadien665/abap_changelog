@@ -19,14 +19,22 @@ MODULE user_command_0100 INPUT.
         input_email      TYPE zcemail,
         cust_id_output   TYPE zcid.
 
+  Data: INPUT_FIRST_NAME_2 type zcname,
+        INPUT_LAST_NAME_2 type zcname,
+        INPUT_EMAIL_2 type zcemail,
+        CUST_ID_OUTPUT_2 type zcid.
+
 *### ALV data types declarations ###*
 
   DATA lo_alv_grid TYPE REF TO cl_gui_alv_grid.
   DATA lo_alv_container TYPE REF TO cl_gui_custom_container.
   DATA lt_fieldcatalog TYPE lvc_t_fcat.
+  data: gs_layout type lvc_s_layo.
+        gs_layout-no_toolbar = 'X'.
+
 
   lt_fieldcatalog = VALUE #(
-      ( fieldname = 'cust_id' col_pos = 0 scrtext_m = 'id' )
+      ( fieldname = 'cust_id' col_pos = 0 scrtext_m = 'id' hotspot = 'X' )
       ( fieldname = 'cust_fname' col_pos = 1 scrtext_m = 'first name' )
       ( fieldname = 'cust_lname' col_pos = 2 scrtext_m = 'last name')
       ( fieldname = 'cust_email' col_pos = 3 scrtext_m = 'email' )
@@ -39,6 +47,10 @@ MODULE user_command_0100 INPUT.
 *### Creating new object for customer modification methods (assigned below to buttons) ###*
 
   DATA(customer) = NEW zcl_customer(  ).
+
+
+
+
 
 *### Declaration of actions for each customer modification option:
 *### CLEAR_BTN - to clear all fields so user doesn't have to clear all manually
@@ -83,7 +95,9 @@ MODULE user_command_0100 INPUT.
                                 IMPORTING
                                 lt_customer_data = lt_imported_cust_data ).
 
-        lo_alv_grid->set_table_for_first_display( CHANGING
+        lo_alv_grid->set_table_for_first_display( EXPORTING
+                                                  is_layout = gs_layout
+                                                CHANGING
                                                 it_outtab = lt_imported_cust_data
                                                 it_fieldcatalog = lt_fieldcatalog ).
 
@@ -118,5 +132,17 @@ MODULE user_command_0100 INPUT.
       ENDTRY.
 
   ENDCASE.
+
+
+  data hotspot_flag_unset type string.
+  data(lo_alv_events) = new zcl_alv_events(  ).
+  lo_alv_events->transfer_data( EXPORTING
+                                lt_needed_data = lt_imported_cust_data
+                                IMPORTING
+                                row_data = data(lwa_clicked_data)
+                                hotspot_flag = hotspot_flag_unset ).
+  set HANDLER lo_alv_events->hotspot for lo_alv_grid.
+
+
 
 ENDMODULE.
