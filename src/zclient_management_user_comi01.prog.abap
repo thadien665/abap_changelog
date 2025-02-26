@@ -19,10 +19,10 @@ MODULE user_command_0100 INPUT.
         input_email      TYPE zcemail,
         cust_id_output   TYPE zcid.
 
-  Data: INPUT_FIRST_NAME_2 type zcname,
-        INPUT_LAST_NAME_2 type zcname,
-        INPUT_EMAIL_2 type zcemail,
-        CUST_ID_OUTPUT_2 type zcid.
+*  Data: INPUT_FIRST_NAME_2 type zcname,
+*        INPUT_LAST_NAME_2 type zcname,
+*        INPUT_EMAIL_2 type zcemail,
+*        CUST_ID_OUTPUT_2 type zcid.
 
 *### ALV data types declarations ###*
 
@@ -133,15 +133,27 @@ MODULE user_command_0100 INPUT.
 
   ENDCASE.
 
-
-  data hotspot_flag_unset type string.
-  data(lo_alv_events) = new zcl_alv_events(  ).
-  lo_alv_events->transfer_data( EXPORTING
-                                lt_needed_data = lt_imported_cust_data
-                                IMPORTING
-                                row_data = data(lwa_clicked_data)
-                                hotspot_flag = hotspot_flag_unset ).
+  if lo_alv_events is initial.
+  create OBJECT lo_alv_events.
+  lo_alv_events->prep_data( EXPORTING lt_needed_data = lt_imported_cust_data ).
+  endif.
   set HANDLER lo_alv_events->hotspot for lo_alv_grid.
+
+
+
+    case sy-ucomm.
+        when 'REFRESH'.
+*        lo_alv_events->prep_data( IMPORTING final_data = data(lwa_clicked_data) ).
+        data(lwa_clicked_data) = lo_alv_events->prep_data( ).
+
+        INPUT_FIRST_NAME_2 = lwa_clicked_data-cust_fname.
+
+    endcase.
+*  if sy-ucomm = 'HOTSPOT'.
+
+*    INPUT_FIRST_NAME_2 = lwa_clicked_data-cust_fname.
+*  endif.
+
 
 
 
