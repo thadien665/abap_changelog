@@ -95,6 +95,8 @@ MODULE user_command_0100 INPUT.
                                 IMPORTING
                                 lt_customer_data = lt_imported_cust_data ).
 
+        lo_alv_events->prep_data( EXPORTING lt_needed_data = lt_imported_cust_data ).
+
         lo_alv_grid->set_table_for_first_display( EXPORTING
                                                   is_layout = gs_layout
                                                 CHANGING
@@ -110,7 +112,11 @@ MODULE user_command_0100 INPUT.
                                 IMPORTING
                                 lt_customer_data = lt_imported_cust_data ).
 
+        lo_alv_events->prep_data( EXPORTING lt_needed_data = lt_imported_cust_data ).
+
         lo_alv_grid->refresh_table_display(  ).
+
+
       ENDIF.
 
 
@@ -133,10 +139,10 @@ MODULE user_command_0100 INPUT.
 
   ENDCASE.
 
-  if lo_alv_events is initial.
-  create OBJECT lo_alv_events.
-  lo_alv_events->prep_data( EXPORTING lt_needed_data = lt_imported_cust_data ).
-  endif.
+*  if lo_alv_events is initial.
+*  create OBJECT lo_alv_events.
+*  lo_alv_events->prep_data( EXPORTING lt_needed_data = lt_imported_cust_data ).
+*  endif.
   set HANDLER lo_alv_events->hotspot for lo_alv_grid.
 
 
@@ -144,9 +150,10 @@ MODULE user_command_0100 INPUT.
     case sy-ucomm.
         when 'REFRESH'.
 *        lo_alv_events->prep_data( IMPORTING final_data = data(lwa_clicked_data) ).
-        data(lwa_clicked_data) = lo_alv_events->prep_data( ).
+        data(lwa_clicked_data) = lo_alv_events->returning_data( ).
 
         INPUT_FIRST_NAME_2 = lwa_clicked_data-cust_fname.
+        input_last_name_2 = lwa_clicked_data-cust_lname.
 
     endcase.
 *  if sy-ucomm = 'HOTSPOT'.
