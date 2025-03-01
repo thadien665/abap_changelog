@@ -48,10 +48,6 @@ MODULE user_command_0100 INPUT.
 
   DATA(customer) = NEW zcl_customer(  ).
 
-
-
-
-
 *### Declaration of actions for each customer modification option:
 *### CLEAR_BTN - to clear all fields so user doesn't have to clear all manually
 *### CREATE_BTN - new customer creation
@@ -74,6 +70,7 @@ MODULE user_command_0100 INPUT.
         customer->create_customer( lv_first_name = input_first_name
                                    lv_last_name = input_last_name
                                    lv_email = input_email ).
+
         MESSAGE i001(zmsgclass).
         CLEAR: input_first_name, input_last_name, input_email.
       ENDIF.
@@ -87,6 +84,7 @@ MODULE user_command_0100 INPUT.
       IF lo_alv_grid IS INITIAL.
         lo_alv_container = NEW cl_gui_custom_container( 'SUBSCREEN_1' ).
         lo_alv_grid = NEW cl_gui_alv_grid( lo_alv_container ).
+        set HANDLER lo_alv_events->hotspot for lo_alv_grid.
 
         customer->search_cusomer(   EXPORTING
                                 lv_first_name = input_first_name
@@ -143,7 +141,7 @@ MODULE user_command_0100 INPUT.
 *  create OBJECT lo_alv_events.
 *  lo_alv_events->prep_data( EXPORTING lt_needed_data = lt_imported_cust_data ).
 *  endif.
-  set HANDLER lo_alv_events->hotspot for lo_alv_grid.
+*  set HANDLER lo_alv_events->hotspot for lo_alv_grid.
 
 
 
