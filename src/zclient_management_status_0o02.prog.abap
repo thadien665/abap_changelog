@@ -7,8 +7,8 @@
 *&
 *&---------------------------------------------------------------------*
 MODULE status_0100 OUTPUT.
-* SET PF-STATUS 'xxxxxxxx'.
-* SET TITLEBAR 'xxx'.
+ SET PF-STATUS 'STANDARD'.
+ SET TITLEBAR 'CUSTOMER MANAGEMENT'.
 
 if lo_alv_events is initial.
 create OBJECT lo_alv_events.

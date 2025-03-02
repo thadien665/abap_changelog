@@ -121,10 +121,10 @@ MODULE user_command_0100 INPUT.
 
     WHEN 'UPDATE_BTN'.
 
-      customer->update_customer( lv_first_name = input_first_name
-                                 lv_last_name = input_last_name
-                                 lv_email = input_email
-                                 lv_cust_id = cust_id_output ).
+      customer->update_customer( lv_first_name = input_first_name_2
+                                 lv_last_name = input_last_name_2
+                                 lv_email = input_email_2
+                                 lv_cust_id = CUST_ID_OUTPUT_2 ).
 
     WHEN 'DELETE_BTN'.
 
@@ -135,31 +135,20 @@ MODULE user_command_0100 INPUT.
           MESSAGE lcx_error->get_text( ) TYPE 'i'.
       ENDTRY.
 
-  ENDCASE.
+    WHEN 'REFRESH'.
 
-*  if lo_alv_events is initial.
-*  create OBJECT lo_alv_events.
-*  lo_alv_events->prep_data( EXPORTING lt_needed_data = lt_imported_cust_data ).
-*  endif.
-*  set HANDLER lo_alv_events->hotspot for lo_alv_grid.
-
-
-
-    case sy-ucomm.
-        when 'REFRESH'.
-*        lo_alv_events->prep_data( IMPORTING final_data = data(lwa_clicked_data) ).
         data(lwa_clicked_data) = lo_alv_events->returning_data( ).
 
         INPUT_FIRST_NAME_2 = lwa_clicked_data-cust_fname.
         input_last_name_2 = lwa_clicked_data-cust_lname.
+        CUST_ID_OUTPUT_2 = lwa_clicked_data-cust_id.
+        INPUT_EMAIL_2 = lwa_clicked_data-cust_email.
+
+    WHEN 'BACK'.
+
+        leave to screen 0.
 
     endcase.
-*  if sy-ucomm = 'HOTSPOT'.
-
-*    INPUT_FIRST_NAME_2 = lwa_clicked_data-cust_fname.
-*  endif.
-
-
 
 
 ENDMODULE.
