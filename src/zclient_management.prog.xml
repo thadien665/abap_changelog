@@ -42,28 +42,13 @@
        <CONT_NAME>SCREEN</CONT_NAME>
        <TYPE>TEXT</TYPE>
        <NAME>LABEL-TITLE</NAME>
-       <TEXT>Customer_managment:</TEXT>
+       <TEXT>Customer_ID:</TEXT>
        <LINE>001</LINE>
-       <COLUMN>004</COLUMN>
-       <LENGTH>019</LENGTH>
-       <VISLENGTH>019</VISLENGTH>
+       <COLUMN>065</COLUMN>
+       <LENGTH>012</LENGTH>
+       <VISLENGTH>012</VISLENGTH>
        <HEIGHT>001</HEIGHT>
        <FORMAT>CHAR</FORMAT>
-       <REQU_ENTRY>N</REQU_ENTRY>
-      </RPY_DYFATC>
-      <RPY_DYFATC>
-       <CONT_TYPE>SCREEN</CONT_TYPE>
-       <CONT_NAME>SCREEN</CONT_NAME>
-       <TYPE>TEMPLATE</TYPE>
-       <NAME>CUST_ID_OUTPUT</NAME>
-       <TEXT>_______________________</TEXT>
-       <LINE>001</LINE>
-       <COLUMN>026</COLUMN>
-       <LENGTH>023</LENGTH>
-       <VISLENGTH>023</VISLENGTH>
-       <HEIGHT>001</HEIGHT>
-       <FORMAT>NUMC</FORMAT>
-       <OUTPUT_FLD>X</OUTPUT_FLD>
        <REQU_ENTRY>N</REQU_ENTRY>
       </RPY_DYFATC>
       <RPY_DYFATC>
@@ -81,6 +66,23 @@
        <OUTPUT_FLD>X</OUTPUT_FLD>
        <REQU_ENTRY>N</REQU_ENTRY>
        <RIGHT_JUST>X</RIGHT_JUST>
+      </RPY_DYFATC>
+      <RPY_DYFATC>
+       <CONT_TYPE>SCREEN</CONT_TYPE>
+       <CONT_NAME>SCREEN</CONT_NAME>
+       <TYPE>PUSH</TYPE>
+       <NAME>CHANGELOG_BTN</NAME>
+       <TEXT>Log_</TEXT>
+       <ICON_NAME>ICON_INFORMATION</ICON_NAME>
+       <WITH_ICON>X</WITH_ICON>
+       <LINE>001</LINE>
+       <COLUMN>112</COLUMN>
+       <LENGTH>009</LENGTH>
+       <VISLENGTH>007</VISLENGTH>
+       <HEIGHT>001</HEIGHT>
+       <PUSH_FCODE>LOG_BTN</PUSH_FCODE>
+       <FORMAT>CHAR</FORMAT>
+       <REQU_ENTRY>N</REQU_ENTRY>
       </RPY_DYFATC>
       <RPY_DYFATC>
        <CONT_TYPE>SCREEN</CONT_TYPE>
@@ -305,13 +307,76 @@
       </RPY_DYFATC>
      </FIELDS>
     </item>
+    <item>
+     <HEADER>
+      <PROGRAM>ZCLIENT_MANAGEMENT</PROGRAM>
+      <SCREEN>0200</SCREEN>
+      <LANGUAGE>E</LANGUAGE>
+      <DESCRIPT>Changelog display</DESCRIPT>
+      <TYPE>M</TYPE>
+      <NEXTSCREEN>0200</NEXTSCREEN>
+      <LINES>027</LINES>
+      <COLUMNS>168</COLUMNS>
+     </HEADER>
+     <CONTAINERS>
+      <RPY_DYCATT>
+       <TYPE>SCREEN</TYPE>
+       <NAME>SCREEN</NAME>
+      </RPY_DYCATT>
+      <RPY_DYCATT>
+       <TYPE>CUST_CTRL</TYPE>
+       <NAME>SUBSCREEN_2</NAME>
+       <ELEMENT_OF>SCREEN</ELEMENT_OF>
+       <LINE>003</LINE>
+       <COLUMN>005</COLUMN>
+       <LENGTH>123</LENGTH>
+       <HEIGHT>024</HEIGHT>
+      </RPY_DYCATT>
+     </CONTAINERS>
+     <FIELDS>
+      <RPY_DYFATC>
+       <CONT_TYPE>SCREEN</CONT_TYPE>
+       <CONT_NAME>SCREEN</CONT_NAME>
+       <TYPE>PUSH</TYPE>
+       <NAME>BACK</NAME>
+       <TEXT>BACK</TEXT>
+       <LINE>001</LINE>
+       <COLUMN>006</COLUMN>
+       <LENGTH>004</LENGTH>
+       <VISLENGTH>004</VISLENGTH>
+       <HEIGHT>001</HEIGHT>
+       <PUSH_FCODE>BACK</PUSH_FCODE>
+       <FORMAT>CHAR</FORMAT>
+       <REQU_ENTRY>N</REQU_ENTRY>
+      </RPY_DYFATC>
+      <RPY_DYFATC>
+       <CONT_TYPE>SCREEN</CONT_TYPE>
+       <CONT_NAME>SCREEN</CONT_NAME>
+       <TYPE>OKCODE</TYPE>
+       <TEXT>____________________</TEXT>
+       <LENGTH>020</LENGTH>
+       <VISLENGTH>020</VISLENGTH>
+       <HEIGHT>001</HEIGHT>
+       <FORMAT>CHAR</FORMAT>
+       <INPUT_FLD>X</INPUT_FLD>
+      </RPY_DYFATC>
+     </FIELDS>
+    </item>
    </DYNPROS>
    <CUA>
     <ADM>
-     <ACTCODE>000001</ACTCODE>
-     <PFKCODE>000001</PFKCODE>
+     <ACTCODE>000002</ACTCODE>
+     <PFKCODE>000002</PFKCODE>
     </ADM>
     <STA>
+     <RSMPE_STAT>
+      <CODE>CHANGELOG DISPLAY</CODE>
+      <MODAL>D</MODAL>
+      <ACTCODE>000002</ACTCODE>
+      <PFKCODE>000002</PFKCODE>
+      <BUTCODE>0001</BUTCODE>
+      <INT_NOTE>Changelog display</INT_NOTE>
+     </RSMPE_STAT>
      <RSMPE_STAT>
       <CODE>STANDARD</CODE>
       <MODAL>D</MODAL>
@@ -363,11 +428,38 @@
       <MODAL>D</MODAL>
       <INT_NOTE>Standard menu</INT_NOTE>
      </RSMPE_ATRT>
+     <RSMPE_ATRT>
+      <OBJ_TYPE>A</OBJ_TYPE>
+      <OBJ_CODE>000002</OBJ_CODE>
+      <MODAL>D</MODAL>
+      <INT_NOTE>Changelog display</INT_NOTE>
+     </RSMPE_ATRT>
+     <RSMPE_ATRT>
+      <OBJ_TYPE>P</OBJ_TYPE>
+      <OBJ_CODE>000002</OBJ_CODE>
+      <MODAL>D</MODAL>
+      <INT_NOTE>Changelog display</INT_NOTE>
+     </RSMPE_ATRT>
+     <RSMPE_ATRT>
+      <OBJ_TYPE>B</OBJ_TYPE>
+      <OBJ_CODE>000002</OBJ_CODE>
+      <SUB_CODE>0001</SUB_CODE>
+      <MODAL>D</MODAL>
+      <INT_NOTE>Changelog display</INT_NOTE>
+     </RSMPE_ATRT>
     </DOC>
     <TIT>
      <RSMPE_TITT>
+      <CODE>CHANGELOG DISPLAY</CODE>
+      <TEXT>Changelog display</TEXT>
+     </RSMPE_TITT>
+     <RSMPE_TITT>
       <CODE>CUSTOMER MANAGEMENT</CODE>
       <TEXT>Customer Management</TEXT>
+     </RSMPE_TITT>
+     <RSMPE_TITT>
+      <CODE>TEST</CODE>
+      <TEXT>Test</TEXT>
      </RSMPE_TITT>
     </TIT>
    </CUA>

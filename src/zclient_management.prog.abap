@@ -18,3 +18,7 @@ create OBJECT lo_alv_events.
 INCLUDE zclient_management_user_comi01.
 
 INCLUDE zclient_management_status_0o02.
+
+INCLUDE zclient_management_status_0o03.
+
+INCLUDE zclient_management_user_comi02.

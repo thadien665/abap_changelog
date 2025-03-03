@@ -12,12 +12,10 @@ MODULE user_command_0100 INPUT.
 *### input_first_name - customer's first name
 *### input_last_name - customer's last name
 *### input_email - customer's email
-*### cust_id_output - customer's ID (not to be modified by user)
 
   DATA: input_first_name TYPE zcname,
         input_last_name  TYPE zcname,
-        input_email      TYPE zcemail,
-        cust_id_output   TYPE zcid.
+        input_email      TYPE zcemail.
 
 *  Data: INPUT_FIRST_NAME_2 type zcname,
 *        INPUT_LAST_NAME_2 type zcname,
@@ -62,7 +60,7 @@ MODULE user_command_0100 INPUT.
 
     WHEN 'CLEAR_BTN'.
 
-      CLEAR: input_first_name, input_last_name, input_email, cust_id_output.
+      CLEAR: input_first_name, input_last_name, input_email.
 
     WHEN 'CREATE_BTN'.
 
@@ -195,6 +193,10 @@ MODULE user_command_0100 INPUT.
     WHEN 'BACK'.
 
         leave to screen 0.
+
+    WHEN 'LOG_BTN'.
+
+        call screen 0200 STARTING AT 50 50.
 
     endcase.
 
