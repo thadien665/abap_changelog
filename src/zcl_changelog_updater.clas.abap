@@ -14,8 +14,7 @@ CLASS zcl_changelog_updater DEFINITION
            END OF lty_flds_values,
            lt_flds_values type table of lty_flds_values.
 
-    data: lt_changelog_data type table of zcust_changelog,
-          lwa_changelog_row type zcust_changelog.
+
 
     methods:
           getting_data
@@ -27,14 +26,20 @@ CLASS zcl_changelog_updater DEFINITION
                 oper_type      type ZCOPERNAME
                 lt_flds_values type lt_flds_values
             EXPORTING
-                lt_filled_table type lty_changelog_table,
+                lt_filled_table type lty_changelog_table.
 
-          inserting_row
-            IMPORTING
-                lt_ready_table type lty_changelog_table.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
+
+    data: lt_changelog_data type table of zcust_changelog,
+          lwa_changelog_row type zcust_changelog.
+
+    methods:
+        inserting_row
+            IMPORTING
+                lt_ready_table type lty_changelog_table.
+
 ENDCLASS.
 
 

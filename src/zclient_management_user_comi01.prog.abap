@@ -48,6 +48,9 @@ MODULE user_command_0100 INPUT.
 
   DATA(customer) = NEW zcl_customer(  ).
 
+  data(lo_changelog) = new zcl_changelog_updater( ).
+
+
 *### Declaration of actions for each customer modification option:
 *### CLEAR_BTN - to clear all fields so user doesn't have to clear all manually
 *### CREATE_BTN - new customer creation
@@ -72,6 +75,7 @@ MODULE user_command_0100 INPUT.
                                    lv_email = input_email ).
 
         MESSAGE i001(zmsgclass).
+
         CLEAR: input_first_name, input_last_name, input_email.
       ENDIF.
 
@@ -121,15 +125,59 @@ MODULE user_command_0100 INPUT.
 
     WHEN 'UPDATE_BTN'.
 
+      data(lo_db_comparison) = new zcl_db_comparison(  ).
+
+      data(lwa_data_before) = lo_alv_events->returning_data(  ).
+
+      data(lt_data_before) = value zcust_details( cust_fname = lwa_data_before-cust_fname
+                                                cust_lname = lwa_data_before-cust_lname
+                                                cust_email = lwa_data_before-cust_email ).
+
       customer->update_customer( lv_first_name = input_first_name_2
                                  lv_last_name = input_last_name_2
                                  lv_email = input_email_2
                                  lv_cust_id = CUST_ID_OUTPUT_2 ).
 
+      data(lt_data_after) = value zcust_details( cust_fname = input_first_name_2
+                                                cust_lname = input_last_name_2
+                                                cust_email = input_email_2 ).
+
+      lo_db_comparison->data_comparison( exporting
+                                           lt_data_before_update = lt_data_before
+                                           lt_data_after_update = lt_data_after
+                                         importing
+                                            diff_table = data(lt_differences) ).
+
+      lo_changelog->getting_data( user = conv ZCSYUNAME( sy-uname )
+                                  date = sy-datum
+                                  time = sy-uzeit
+                                  customer = CUST_ID_OUTPUT_2
+                                  oper_type = 'MODIFY'
+                                  lt_flds_values = lt_differences ).
+
+
     WHEN 'DELETE_BTN'.
 
+      select single *
+      from zcust_details
+      into @data(lwa_data_to_remove)
+      where cust_id = @cust_id_output_2.
+
+      data lt_data_changes type zcl_changelog_updater=>lt_flds_values.
+      lt_data_changes = value #( ( fld_name = 'First name' v_before = lwa_data_to_remove-cust_fname v_after = '' )
+                                 ( fld_name = 'Last name' v_before = lwa_data_to_remove-cust_lname v_after = '' )
+                                 ( fld_name = 'Email' v_before = lwa_data_to_remove-cust_email v_after = '' )
+                                  ).
+
+      lo_changelog->getting_data( user = conv ZCSYUNAME( sy-uname )
+                                  date = sy-datum
+                                  time = sy-uzeit
+                                  customer = cust_id_output_2
+                                  oper_type = 'DELETE'
+                                  lt_flds_values = lt_data_changes ).
+
       TRY.
-          customer->delete_customer( lv_cust_id = cust_id_output ).
+          customer->delete_customer( lv_cust_id = cust_id_output_2 ).
           MESSAGE i004(zmsgclass).
         CATCH cx_sy_open_sql_db INTO DATA(lcx_error).
           MESSAGE lcx_error->get_text( ) TYPE 'i'.

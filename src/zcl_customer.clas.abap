@@ -83,6 +83,7 @@ CLASS zcl_customer IMPLEMENTATION.
                                        ( fld_name = 'Email' v_before = '' v_after = lv_email  ) ).
 
     lo_changelog = new zcl_changelog_updater(  ).
+
     lo_changelog->getting_data( exporting
                                     user = conv ZCSYUNAME( sy-uname )
                                     date = sy-datum
@@ -90,7 +91,6 @@ CLASS zcl_customer IMPLEMENTATION.
                                     customer =  lv_new_customer-cust_id
                                     oper_type = 'CREATE'
                                     lt_flds_values = lt_changelog_fld_values ).
-
 
     INSERT zcust_details FROM lv_new_customer.
     COMMIT WORK.
