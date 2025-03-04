@@ -352,6 +352,36 @@
       <RPY_DYFATC>
        <CONT_TYPE>SCREEN</CONT_TYPE>
        <CONT_NAME>SCREEN</CONT_NAME>
+       <TYPE>TEMPLATE</TYPE>
+       <NAME>USER_ID</NAME>
+       <TEXT>_______________</TEXT>
+       <LINE>001</LINE>
+       <COLUMN>018</COLUMN>
+       <LENGTH>015</LENGTH>
+       <VISLENGTH>015</VISLENGTH>
+       <HEIGHT>001</HEIGHT>
+       <FORMAT>NUMC</FORMAT>
+       <INPUT_FLD>X</INPUT_FLD>
+       <OUTPUT_FLD>X</OUTPUT_FLD>
+      </RPY_DYFATC>
+      <RPY_DYFATC>
+       <CONT_TYPE>SCREEN</CONT_TYPE>
+       <CONT_NAME>SCREEN</CONT_NAME>
+       <TYPE>PUSH</TYPE>
+       <NAME>SEARCH_BTN_2</NAME>
+       <TEXT>search</TEXT>
+       <LINE>001</LINE>
+       <COLUMN>043</COLUMN>
+       <LENGTH>006</LENGTH>
+       <VISLENGTH>006</VISLENGTH>
+       <HEIGHT>001</HEIGHT>
+       <PUSH_FCODE>SRCH_B2</PUSH_FCODE>
+       <FORMAT>CHAR</FORMAT>
+       <REQU_ENTRY>N</REQU_ENTRY>
+      </RPY_DYFATC>
+      <RPY_DYFATC>
+       <CONT_TYPE>SCREEN</CONT_TYPE>
+       <CONT_NAME>SCREEN</CONT_NAME>
        <TYPE>OKCODE</TYPE>
        <TEXT>____________________</TEXT>
        <LENGTH>020</LENGTH>
