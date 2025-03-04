@@ -14,6 +14,11 @@ CLASS zcl_customer_data_validator DEFINITION
 
   PROTECTED SECTION.
   PRIVATE SECTION.
+
+  data acceptable_letters_and_space type string VALUE '^[A-Za-z ]+$'.
+
+
+
 ENDCLASS.
 
 
@@ -22,9 +27,7 @@ CLASS zcl_customer_data_validator IMPLEMENTATION.
 
   METHOD names_validation.
 
-    data(regex) = '[A-Za-zÀ-Ÿà-ÿ\-\ \'']'.
-
-    if name CS regex.
+    if cl_abap_matcher=>matches( pattern = acceptable_letters_and_space text = name ).
         check = abap_true.
     else.
         check = abap_false.

@@ -36,12 +36,12 @@ class name_Validation_1 implementation.
 
     f_cut = new zcl_Customer_Data_Validator(  ).
 
-    data(check) = f_cut->names_validation( name = 'Robert$' ).
+    data(check) = f_cut->names_validation( name = 'anna maria' ).
 
 
     cl_Abap_Unit_Assert=>assert_Equals(
           act   = check
-          exp   = abap_false          "<--- please adapt expected value
+          exp   = abap_true          "<--- please adapt expected value
         " msg   = 'Testing value check'
 *         level =
         ).
