@@ -32,6 +32,12 @@
      <MSGNR>004</MSGNR>
      <TEXT>User deleted succesfully</TEXT>
     </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZMSGCLASS</ARBGB>
+     <MSGNR>005</MSGNR>
+     <TEXT>Cannot create customer</TEXT>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>

@@ -68,13 +68,35 @@ MODULE user_command_0100 INPUT.
       IF input_first_name IS INITIAL OR input_last_name IS INITIAL OR input_email IS INITIAL.
         MESSAGE i002(zmsgclass).
       ELSE.
-        customer->create_customer( lv_first_name = input_first_name
+        customer->create_customer( EXPORTING
+                                   lv_first_name = input_first_name
                                    lv_last_name = input_last_name
-                                   lv_email = input_email ).
+                                   lv_email = input_email
+                                   IMPORTING
+                                   status = data(create_status)
+                                   customer_id = data(customer_id) ).
+      if create_status = abap_true.
+        data lt_changelog_data_1 type  zcl_changelog_updater=>lt_flds_values.
+
+        lt_changelog_data_1 = value #( ( fld_name = 'First name' v_before = '' v_after = input_first_name )
+                                     ( fld_name = 'Last name' v_before = '' v_after = input_last_name )
+                                     ( fld_name = 'Email' v_before = '' v_after = input_email )
+                                     ( fld_name = 'Customer id' v_before = '' v_after = customer_id )
+                                   ).
+
+        lo_changelog->getting_data( user = conv ZCSYUNAME( sy-uname )
+                                    date = sy-datum
+                                    time = sy-uzeit
+                                    customer = customer_id
+                                    oper_type = 'CREATE'
+                                    lt_flds_values = lt_changelog_data_1 ).
 
         MESSAGE i001(zmsgclass).
 
         CLEAR: input_first_name, input_last_name, input_email.
+       else.
+        MESSAGE i005(zmsgclass).
+       endif.
       ENDIF.
 
     WHEN 'SEARCH_BTN'.

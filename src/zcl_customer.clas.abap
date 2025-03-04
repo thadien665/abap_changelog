@@ -19,7 +19,10 @@ CLASS zcl_customer DEFINITION
         IMPORTING
           lv_first_name TYPE zcname
           lv_last_name  TYPE zcname
-          lv_email      TYPE zcemail,
+          lv_email      TYPE zcemail
+        EXPORTING
+          status type abap_bool
+          customer_id type zcid,
 
       search_cusomer
         IMPORTING
@@ -77,23 +80,11 @@ CLASS zcl_customer IMPLEMENTATION.
     lv_new_customer-cust_fname = lv_first_name.
     lv_new_customer-cust_lname = lv_last_name.
     lv_new_customer-cust_email = lv_email.
-
-    lt_changelog_fld_values = value #( ( fld_name = 'First name' v_before = '' v_after = lv_first_name  )
-                                       ( fld_name = 'Last name' v_before = '' v_after = lv_last_name  )
-                                       ( fld_name = 'Email' v_before = '' v_after = lv_email  ) ).
-
-    lo_changelog = new zcl_changelog_updater(  ).
-
-    lo_changelog->getting_data( exporting
-                                    user = conv ZCSYUNAME( sy-uname )
-                                    date = sy-datum
-                                    time = sy-uzeit
-                                    customer =  lv_new_customer-cust_id
-                                    oper_type = 'CREATE'
-                                    lt_flds_values = lt_changelog_fld_values ).
+    customer_id = lv_new_customer-cust_id.
 
     INSERT zcust_details FROM lv_new_customer.
     COMMIT WORK.
+    status = abap_true.
 
   ENDMETHOD.
 
