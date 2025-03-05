@@ -47,6 +47,8 @@ MODULE user_command_0100 INPUT.
   DATA(customer) = NEW zcl_customer(  ).
 
   data(lo_changelog) = new zcl_changelog_updater( ).
+  data(lo_data_validator) = new zcl_customer_data_validator(  ).
+  data lv_create_flag type string value ''.
 
 
 *### Declaration of actions for each customer modification option:
@@ -66,8 +68,50 @@ MODULE user_command_0100 INPUT.
 
       "### All 3 values are mandatory to provide ###"
       IF input_first_name IS INITIAL OR input_last_name IS INITIAL OR input_email IS INITIAL.
+        lv_create_flag = 'X'.
         MESSAGE i002(zmsgclass).
       ELSE.
+        lv_create_flag = ''.
+      endif.
+
+      if lv_create_flag = ''.
+        data(lv_fname_validation) = lo_data_validator->names_validation( exporting
+                                                                            name = input_first_name
+                                                                        ).
+        if lv_fname_validation = abap_false.
+            lv_create_flag = 'X'.
+            MESSAGE s006(zmsgclass).
+        else.
+            lv_create_flag = ''.
+        endif.
+      endif.
+
+      if lv_create_flag = ''.
+        data(lv_lname_validation) = lo_data_validator->names_validation( exporting
+                                                                            name = input_last_name
+                                                                        ).
+        if lv_lname_validation = abap_false.
+            lv_create_flag = 'X'.
+            MESSAGE s007(zmsgclass).
+        else.
+            lv_create_flag = ''.
+        endif.
+      endif.
+
+      if lv_create_flag = ''.
+        data(lv_email_validation) = lo_data_validator->email_validation( exporting
+                                                                            email = input_email
+                                                                        ).
+        if lv_email_validation = abap_false.
+            lv_create_flag = 'X'.
+            MESSAGE s008(zmsgclass).
+        else.
+            lv_create_flag = ''.
+        endif.
+
+      endif.
+
+      if lv_create_flag = ''.
         customer->create_customer( EXPORTING
                                    lv_first_name = input_first_name
                                    lv_last_name = input_last_name
@@ -75,28 +119,28 @@ MODULE user_command_0100 INPUT.
                                    IMPORTING
                                    status = data(create_status)
                                    customer_id = data(customer_id) ).
-      if create_status = abap_true.
-        data lt_changelog_data_1 type  zcl_changelog_updater=>lt_flds_values.
+          if create_status = abap_true.
+            data lt_changelog_data_1 type  zcl_changelog_updater=>lt_flds_values.
 
-        lt_changelog_data_1 = value #( ( fld_name = 'First name' v_before = '' v_after = input_first_name )
-                                     ( fld_name = 'Last name' v_before = '' v_after = input_last_name )
-                                     ( fld_name = 'Email' v_before = '' v_after = input_email )
-                                     ( fld_name = 'Customer id' v_before = '' v_after = customer_id )
-                                   ).
+            lt_changelog_data_1 = value #( ( fld_name = 'First name' v_before = '' v_after = input_first_name )
+                                         ( fld_name = 'Last name' v_before = '' v_after = input_last_name )
+                                         ( fld_name = 'Email' v_before = '' v_after = input_email )
+                                         ( fld_name = 'Customer id' v_before = '' v_after = customer_id )
+                                       ).
 
-        lo_changelog->getting_data( user = conv ZCSYUNAME( sy-uname )
-                                    date = sy-datum
-                                    time = sy-uzeit
-                                    customer = customer_id
-                                    oper_type = 'CREATE'
-                                    lt_flds_values = lt_changelog_data_1 ).
+            lo_changelog->getting_data( user = conv ZCSYUNAME( sy-uname )
+                                        date = sy-datum
+                                        time = sy-uzeit
+                                        customer = customer_id
+                                        oper_type = 'CREATE'
+                                        lt_flds_values = lt_changelog_data_1 ).
 
-        MESSAGE i001(zmsgclass).
+            MESSAGE i001(zmsgclass).
 
-        CLEAR: input_first_name, input_last_name, input_email.
-       else.
-        MESSAGE i005(zmsgclass).
-       endif.
+            CLEAR: input_first_name, input_last_name, input_email.
+           else.
+            MESSAGE i005(zmsgclass).
+           endif.
       ENDIF.
 
     WHEN 'SEARCH_BTN'.

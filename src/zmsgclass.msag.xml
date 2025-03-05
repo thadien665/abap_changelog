@@ -38,6 +38,24 @@
      <MSGNR>005</MSGNR>
      <TEXT>Cannot create customer</TEXT>
     </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZMSGCLASS</ARBGB>
+     <MSGNR>006</MSGNR>
+     <TEXT>Incorrect values in first name (only latin letters and spaces allowed)</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZMSGCLASS</ARBGB>
+     <MSGNR>007</MSGNR>
+     <TEXT>Incorrect values in last name (only latin letters and spaces allowed)</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZMSGCLASS</ARBGB>
+     <MSGNR>008</MSGNR>
+     <TEXT>Incorrect values in email (letters.digits@lettersdigits.domain allowed)</TEXT>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>
