@@ -49,6 +49,7 @@ MODULE user_command_0100 INPUT.
   data(lo_changelog) = new zcl_changelog_updater( ).
   data(lo_data_validator) = new zcl_customer_data_validator(  ).
   data lv_create_flag type string value ''.
+  data lv_update_flag type string value ''.
 
 
 *### Declaration of actions for each customer modification option:
@@ -80,7 +81,7 @@ MODULE user_command_0100 INPUT.
                                                                         ).
         if lv_fname_validation = abap_false.
             lv_create_flag = 'X'.
-            MESSAGE s006(zmsgclass).
+            MESSAGE i006(zmsgclass).
         else.
             lv_create_flag = ''.
         endif.
@@ -92,7 +93,7 @@ MODULE user_command_0100 INPUT.
                                                                         ).
         if lv_lname_validation = abap_false.
             lv_create_flag = 'X'.
-            MESSAGE s007(zmsgclass).
+            MESSAGE i007(zmsgclass).
         else.
             lv_create_flag = ''.
         endif.
@@ -104,7 +105,7 @@ MODULE user_command_0100 INPUT.
                                                                         ).
         if lv_email_validation = abap_false.
             lv_create_flag = 'X'.
-            MESSAGE s008(zmsgclass).
+            MESSAGE i008(zmsgclass).
         else.
             lv_create_flag = ''.
         endif.
@@ -189,6 +190,7 @@ MODULE user_command_0100 INPUT.
 
     WHEN 'UPDATE_BTN'.
 
+      lv_update_flag = ''.
       data(lo_db_comparison) = new zcl_db_comparison(  ).
 
       data(lwa_data_before) = lo_alv_events->returning_data(  ).
@@ -197,6 +199,29 @@ MODULE user_command_0100 INPUT.
                                                 cust_lname = lwa_data_before-cust_lname
                                                 cust_email = lwa_data_before-cust_email ).
 
+      data(lv_2nd_fname_validation) = lo_data_validator->names_validation( input_first_name_2 ).
+      if lv_2nd_fname_validation = abap_false.
+        lv_update_flag = 'X'.
+        MESSAGE i006(zmsgclass).
+*      else.
+*        lv_update_flag = ''.
+      endif.
+
+      if lv_update_flag = ''.
+        data(lv_2nd_lname_validation) = lo_data_validator->names_validation( input_last_name_2 ).
+        if lv_2nd_lname_validation = abap_false.
+           lv_update_flag = 'X'.
+           MESSAGE i007(zmsgclass).
+        endif.
+      endif.
+
+      if lv_update_flag = ''.
+        data(lv_2nd_email_validation) = lo_data_validator->email_validation( input_email_2 ).
+        lv_update_flag = 'X'.
+        MESSAGE i008(zmsgclass).
+      endif.
+
+      if lv_update_flag = ''.
       customer->update_customer( lv_first_name = input_first_name_2
                                  lv_last_name = input_last_name_2
                                  lv_email = input_email_2
@@ -218,7 +243,7 @@ MODULE user_command_0100 INPUT.
                                   customer = CUST_ID_OUTPUT_2
                                   oper_type = 'MODIFY'
                                   lt_flds_values = lt_differences ).
-
+      endif.
 
     WHEN 'DELETE_BTN'.
 
