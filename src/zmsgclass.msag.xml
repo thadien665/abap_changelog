@@ -56,6 +56,12 @@
      <MSGNR>008</MSGNR>
      <TEXT>Incorrect values in email (letters.digits@lettersdigits.domain allowed)</TEXT>
     </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZMSGCLASS</ARBGB>
+     <MSGNR>009</MSGNR>
+     <TEXT>No changes applied -&gt; no update needed.</TEXT>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>

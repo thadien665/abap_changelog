@@ -217,8 +217,19 @@ MODULE user_command_0100 INPUT.
 
       if lv_update_flag = ''.
         data(lv_2nd_email_validation) = lo_data_validator->email_validation( input_email_2 ).
+        if lv_2nd_email_validation = abap_false.
+            lv_update_flag = 'X'.
+            MESSAGE i008(zmsgclass).
+        endif.
+      endif.
+
+      if lv_update_flag = ''.
+        if lwa_data_before-cust_fname = input_first_name_2 and
+           lwa_data_before-cust_lname = input_last_name_2 and
+           lwa_data_before-cust_email = input_email_2.
         lv_update_flag = 'X'.
-        MESSAGE i008(zmsgclass).
+        MESSAGE i009(zmsgclass).
+        endif.
       endif.
 
       if lv_update_flag = ''.
