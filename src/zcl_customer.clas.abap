@@ -31,12 +31,20 @@ CLASS zcl_customer DEFINITION
           lv_email         TYPE zcemail
         EXPORTING
           lt_customer_data TYPE ls_cust_data,
+
       update_customer
         IMPORTING
           lv_first_name TYPE zcname
           lv_last_name  TYPE zcname
           lv_email      TYPE zcemail
-          lv_cust_id    TYPE zcid,
+          lv_cust_id    TYPE zcid
+          lv_postal_code type zcpostalcode OPTIONAL
+          lv_city       type zccity optional
+          lv_street     type zcstreet optional
+          lv_home_nr    type zchnumber optional
+          lv_apartm_nr  type zcanumber optional
+          lv_phone      type zcphone optional
+          lv_gender     type zcgender optional,
 
       delete_customer
         IMPORTING
@@ -120,10 +128,63 @@ CLASS zcl_customer IMPLEMENTATION.
 
   METHOD update_customer.
 
+    data: lt_set_builder type table of string,
+          lwa_set_builder type string.
+
     UPDATE zcust_details
     SET cust_fname = @lv_first_name, cust_lname = @lv_last_name, cust_email = @lv_email
     WHERE cust_id = @lv_cust_id.
     COMMIT WORK.
+
+    if lv_postal_code is not initial or
+       lv_city is not initial or
+       lv_street is not initial or
+       lv_home_nr is not initial or
+       lv_apartm_nr is not initial or
+       lv_phone is not initial or
+       lv_gender is not initial.
+
+
+        if lv_postal_code is not initial.
+            APPEND |cust_postal_code = @lv_postal_code| TO lt_set_builder.
+        endif.
+
+        if lv_city is not initial.
+            APPEND |cust_city = @lv_city| TO lt_set_builder.
+        endif.
+
+        if lv_street is not initial.
+            APPEND |cust_street = @lv_street| TO lt_set_builder.
+        endif.
+
+        if lv_home_nr is not initial.
+            APPEND |cust_home_number = @lv_home_nr| TO lt_set_builder.
+        endif.
+
+        if lv_apartm_nr is not initial.
+            APPEND |cust_aprtm_number = @lv_apartm_nr| TO lt_set_builder.
+        endif.
+
+        if lv_phone is not initial.
+            APPEND |cust_phone = @lv_phone| TO lt_set_builder.
+        endif.
+
+        if lv_gender is not initial.
+            APPEND |cust_gender = @lv_gender| TO lt_set_builder.
+        endif.
+
+        if lines( lt_set_builder ) = 1.
+            lwa_set_builder = lt_set_builder[ 1 ].
+        else.
+            CONCATENATE LINES OF lt_set_builder INTO lwa_set_builder SEPARATED BY ', '.
+        endif.
+
+        UPDATE zcust_details
+        SET (lwa_set_builder)
+        WHERE cust_id = @lv_cust_id.
+        COMMIT WORK.
+
+    endif.
 
   ENDMETHOD.
 
