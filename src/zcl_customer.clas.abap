@@ -34,10 +34,10 @@ CLASS zcl_customer DEFINITION
 
       update_customer
         IMPORTING
-          lv_first_name TYPE zcname
-          lv_last_name  TYPE zcname
-          lv_email      TYPE zcemail
-          lv_cust_id    TYPE zcid
+          lv_first_name TYPE zcname optional
+          lv_last_name  TYPE zcname optional
+          lv_email      TYPE zcemail optional
+          lv_cust_id    TYPE zcid optional
           lv_postal_code type zcpostalcode OPTIONAL
           lv_city       type zccity optional
           lv_street     type zcstreet optional

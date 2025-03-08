@@ -50,6 +50,55 @@ CLASS zcl_db_comparison IMPLEMENTATION.
                                    to diff_table.
     endif.
 
+    if lt_data_before_update-cust_gender <> lt_data_after_update-cust_gender.
+        append value #( fld_name = 'Gender'
+                                   v_before = lt_data_before_update-cust_gender
+                                   v_after = lt_data_after_update-cust_gender )
+                                   to diff_table.
+    endif.
+
+    if lt_data_before_update-cust_phone <> lt_data_after_update-cust_phone.
+        append value #( fld_name = 'Phone number'
+                                   v_before = lt_data_before_update-cust_phone
+                                   v_after = lt_data_after_update-cust_phone )
+                                   to diff_table.
+    endif.
+
+    if lt_data_before_update-cust_postal_code <> lt_data_after_update-cust_postal_code.
+        append value #( fld_name = 'Postal code'
+                                   v_before = lt_data_before_update-cust_postal_code
+                                   v_after = lt_data_after_update-cust_postal_code )
+                                   to diff_table.
+    endif.
+
+    if lt_data_before_update-cust_city <> lt_data_after_update-cust_city.
+        append value #( fld_name = 'Postal code'
+                                   v_before = lt_data_before_update-cust_city
+                                   v_after = lt_data_after_update-cust_city )
+                                   to diff_table.
+    endif.
+
+    if lt_data_before_update-cust_street <> lt_data_after_update-cust_street.
+        append value #( fld_name = 'Postal code'
+                                   v_before = lt_data_before_update-cust_street
+                                   v_after = lt_data_after_update-cust_street )
+                                   to diff_table.
+    endif.
+
+    if lt_data_before_update-cust_home_number <> lt_data_after_update-cust_home_number.
+        append value #( fld_name = 'Postal code'
+                                   v_before = lt_data_before_update-cust_home_number
+                                   v_after = lt_data_after_update-cust_home_number )
+                                   to diff_table.
+    endif.
+
+    if lt_data_before_update-cust_aprtm_number <> lt_data_after_update-cust_aprtm_number.
+        append value #( fld_name = 'Postal code'
+                                   v_before = lt_data_before_update-cust_aprtm_number
+                                   v_after = lt_data_after_update-cust_aprtm_number )
+                                   to diff_table.
+    endif.
+
   ENDMETHOD.
 
 ENDCLASS.

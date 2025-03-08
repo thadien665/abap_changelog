@@ -15,5 +15,4 @@ create OBJECT lo_alv_events.
 endif.
 
 
-
 ENDMODULE.

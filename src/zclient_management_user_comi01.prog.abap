@@ -17,6 +17,14 @@ MODULE user_command_0100 INPUT.
         input_last_name  TYPE zcname,
         input_email      TYPE zcemail.
 
+  data: POSTAL_FIELD type zcpostalcode,
+        CITY_FIELD type zccity,
+        STREET_FIELD type zcstreet,
+        HOME_FIELD type zchnumber,
+        APARTMENT_FIELD type zcanumber,
+        GENDER_FIELD type zcgender,
+        PHONE_FIELD type zcphone.
+
 *  Data: INPUT_FIRST_NAME_2 type zcname,
 *        INPUT_LAST_NAME_2 type zcname,
 *        INPUT_EMAIL_2 type zcemail,
@@ -203,8 +211,6 @@ MODULE user_command_0100 INPUT.
       if lv_2nd_fname_validation = abap_false.
         lv_update_flag = 'X'.
         MESSAGE i006(zmsgclass).
-*      else.
-*        lv_update_flag = ''.
       endif.
 
       if lv_update_flag = ''.
@@ -254,6 +260,137 @@ MODULE user_command_0100 INPUT.
                                   customer = CUST_ID_OUTPUT_2
                                   oper_type = 'MODIFY'
                                   lt_flds_values = lt_differences ).
+      endif.
+
+      "### checking if user entered any other details. If not, this block with other details will be skipped.
+      if POSTAL_FIELD is not INITIAL or
+         CITY_FIELD is not initial or
+         STREET_FIELD is not initial or
+         HOME_FIELD is not initial or
+         APARTMENT_FIELD is not initial or
+         GENDER_FIELD is not initial or
+         PHONE_FIELD is not initial.
+
+
+      "### getting data before update proceed to pass later to changelog updater
+        data lt_other_data_before type table of zcust_details.
+
+          select
+          cust_gender,
+          cust_phone,
+          cust_postal_code,
+          cust_street,
+          cust_home_number,
+          cust_aprtm_number
+          from zcust_details
+          into table @lt_other_data_before
+          where cust_id = @cust_id_output_2.
+
+          data(lwa_other_data_before) = lt_other_data_before[ 1 ].
+
+      "### validating if user's new data is correct
+        data lv_flag_other_details type string value ''.
+
+        if POSTAL_FIELD is not initial.
+            data(lv_postal_code_check) = lo_data_validator->postal_code_validation( POSTAL_FIELD ).
+            if lv_postal_code_check = abap_false.
+                lv_flag_other_details = 'X'.
+                MESSAGE i010(zmsgclass).
+            endif.
+        endif.
+
+        if lv_flag_other_details = ''.
+            if CITY_FIELD is not initial.
+                data(lv_city_check) = lo_data_validator->city_validation( CITY_FIELD ).
+                    if lv_city_check = abap_false.
+                        lv_flag_other_details = 'X'.
+                        MESSAGE i010(zmsgclass).
+                    endif.
+            endif.
+        endif.
+
+        if lv_flag_other_details = ''.
+            if STREET_FIELD is not initial.
+                data(lv_street_check) = lo_data_validator->street_validation( STREET_FIELD ).
+                    if lv_street_check = abap_false.
+                        lv_flag_other_details = 'X'.
+                        MESSAGE i011(zmsgclass).
+                    endif.
+            endif.
+        endif.
+
+        if lv_flag_other_details = ''.
+            if HOME_FIELD is not initial.
+                data(lv_home_check) = lo_data_validator->home_nr_validation( HOME_FIELD ).
+                    if lv_home_check = abap_false.
+                        lv_flag_other_details = 'X'.
+                        MESSAGE i012(zmsgclass).
+                    endif.
+            endif.
+        endif.
+
+
+        if lv_flag_other_details = ''.
+            if APARTMENT_FIELD is not initial.
+                data(lv_apartm_check) = lo_data_validator->apartm_nr_validation( APARTMENT_FIELD ).
+                    if lv_apartm_check = abap_false.
+                        lv_flag_other_details = 'X'.
+                        MESSAGE i013(zmsgclass).
+                    endif.
+            endif.
+        endif.
+
+        if lv_flag_other_details = ''.
+            if GENDER_FIELD is not initial.
+                data(lv_gender_check) = lo_data_validator->gender_validation( GENDER_FIELD ).
+                    if lv_gender_check = abap_false.
+                        lv_flag_other_details = 'X'.
+                        MESSAGE i014(zmsgclass).
+                    endif.
+            endif.
+        endif.
+
+        if lv_flag_other_details = ''.
+            if PHONE_FIELD is not initial.
+                data(lv_phone_check) = lo_data_validator->phone_validation( PHONE_FIELD ).
+                    if lv_phone_check = abap_false.
+                        lv_flag_other_details = 'X'.
+                        MESSAGE i015(zmsgclass).
+                    endif.
+            endif.
+        endif.
+
+      "### if new data is correct, program will check if there any actually any changes to be done
+      if lv_flag_other_details = ''.
+          if lwa_other_data_before-cust_gender = GENDER_FIELD and
+             lwa_other_data_before-cust_phone = phone_field and
+             lwa_other_data_before-cust_postal_code = postal_field and
+             lwa_other_data_before-cust_city = city_field and
+             lwa_other_data_before-cust_street = street_field and
+             lwa_other_data_before-cust_home_number = home_field and
+             lwa_other_data_before-cust_aprtm_number = apartment_field.
+             lv_update_flag = 'X'.
+             MESSAGE i009(zmsgclass).
+          endif.
+      endif.
+
+
+      "### if data are correct and there are any differences, update will be executed
+      if lv_flag_other_details = ''.
+        customer->update_customer( EXPORTING
+                                   lv_gender = GENDER_FIELD
+                                   lv_phone = phone_field
+                                   lv_postal_code = postal_field
+                                   lv_city = city_field
+                                   lv_street = street_field
+                                   lv_home_nr = home_field
+                                   lv_apartm_nr = apartment_field
+                                   lv_cust_id = cust_id_output_2 ).
+      endif.
+
+
+
+
       endif.
 
     WHEN 'DELETE_BTN'.
