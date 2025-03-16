@@ -79,7 +79,7 @@ MODULE user_command_0100 INPUT.
       "### All 3 values are mandatory to provide ###"
       IF input_first_name IS INITIAL OR input_last_name IS INITIAL OR input_email IS INITIAL.
         lv_create_flag = 'X'.
-        MESSAGE i002(zmsgclass).
+        MESSAGE i002(zmsgclass). "MSG: please fill in all required fields
       ELSE.
         lv_create_flag = ''.
       endif.
@@ -90,7 +90,7 @@ MODULE user_command_0100 INPUT.
                                                                         ).
         if lv_fname_validation = abap_false.
             lv_create_flag = 'X'.
-            MESSAGE i006(zmsgclass).
+            MESSAGE i006(zmsgclass). "MSG: Incorrect values in first name (only latin letters and spaces allowed)
         else.
             lv_create_flag = ''.
         endif.
@@ -102,7 +102,7 @@ MODULE user_command_0100 INPUT.
                                                                         ).
         if lv_lname_validation = abap_false.
             lv_create_flag = 'X'.
-            MESSAGE i007(zmsgclass).
+            MESSAGE i007(zmsgclass). "MSG: Incorrect values in last name (only latin letters and spaces allowed)
         else.
             lv_create_flag = ''.
         endif.
@@ -114,7 +114,7 @@ MODULE user_command_0100 INPUT.
                                                                         ).
         if lv_email_validation = abap_false.
             lv_create_flag = 'X'.
-            MESSAGE i008(zmsgclass).
+            MESSAGE i008(zmsgclass). "MSG: Incorrect values in email (letters.digits@lettersdigits.domain allowed)
         else.
             lv_create_flag = ''.
         endif.
@@ -149,14 +149,14 @@ MODULE user_command_0100 INPUT.
 
             CLEAR: input_first_name, input_last_name, input_email.
            else.
-            MESSAGE i005(zmsgclass).
+            MESSAGE i005(zmsgclass). "MSG: Cannot create customer
            endif.
       ENDIF.
 
     WHEN 'SEARCH_BTN'.
 
       IF input_first_name IS INITIAL AND input_last_name IS INITIAL AND input_email IS INITIAL.
-        MESSAGE s003(zmsgclass).
+        MESSAGE s003(zmsgclass). "MSG: Please enter at least one search criteria
       ENDIF.
 
       IF lo_alv_grid IS INITIAL.
@@ -211,14 +211,14 @@ MODULE user_command_0100 INPUT.
       data(lv_2nd_fname_validation) = lo_data_validator->names_validation( input_first_name_2 ).
       if lv_2nd_fname_validation = abap_false.
         lv_update_flag = 'X'.
-        MESSAGE i006(zmsgclass).
+        MESSAGE i006(zmsgclass). "MSG: Incorrect values in first name (only latin letters and spaces allowed)
       endif.
 
       if lv_update_flag = ''.
         data(lv_2nd_lname_validation) = lo_data_validator->names_validation( input_last_name_2 ).
         if lv_2nd_lname_validation = abap_false.
            lv_update_flag = 'X'.
-           MESSAGE i007(zmsgclass).
+           MESSAGE i007(zmsgclass). "MSG: Incorrect values in last name (only latin letters and spaces allowed)
         endif.
       endif.
 
@@ -226,7 +226,7 @@ MODULE user_command_0100 INPUT.
         data(lv_2nd_email_validation) = lo_data_validator->email_validation( input_email_2 ).
         if lv_2nd_email_validation = abap_false.
             lv_update_flag = 'X'.
-            MESSAGE i008(zmsgclass).
+            MESSAGE i008(zmsgclass). "MSG: Incorrect values in email (letters.digits@lettersdigits.domain allowed)
         endif.
       endif.
 
@@ -235,42 +235,45 @@ MODULE user_command_0100 INPUT.
            lwa_data_before-cust_lname = input_last_name_2 and
            lwa_data_before-cust_email = input_email_2.
         lv_update_flag = 'X'.
-        MESSAGE i009(zmsgclass).
+        MESSAGE i009(zmsgclass). "MSG: No changes applied -> no update needed.
         endif.
       endif.
 
       if lv_update_flag = ''.
-      customer->update_customer( lv_first_name = input_first_name_2
-                                 lv_last_name = input_last_name_2
-                                 lv_email = input_email_2
-                                 lv_cust_id = CUST_ID_OUTPUT_2 ).
+          customer->update_customer( lv_first_name = input_first_name_2
+                                     lv_last_name = input_last_name_2
+                                     lv_email = input_email_2
+                                     lv_cust_id = CUST_ID_OUTPUT_2 ).
+          MESSAGE i016(zmsgclass). "MSG:
 
-      data(lt_data_after) = value zcust_details( cust_fname = input_first_name_2
-                                                cust_lname = input_last_name_2
-                                                cust_email = input_email_2 ).
+          data(lt_data_after) = value zcust_details( cust_fname = input_first_name_2
+                                                    cust_lname = input_last_name_2
+                                                    cust_email = input_email_2 ).
 
-      lo_db_comparison->data_comparison( exporting
-                                           lt_data_before_update = lt_data_before
-                                           lt_data_after_update = lt_data_after
-                                         importing
-                                            diff_table = data(lt_differences) ).
+          lo_db_comparison->data_comparison( exporting
+                                               lt_data_before_update = lt_data_before
+                                               lt_data_after_update = lt_data_after
+                                             importing
+                                                diff_table = data(lt_differences) ).
 
-      lo_changelog->getting_data( user = conv ZCSYUNAME( sy-uname )
-                                  date = sy-datum
-                                  time = sy-uzeit
-                                  customer = CUST_ID_OUTPUT_2
-                                  oper_type = 'MODIFY'
-                                  lt_flds_values = lt_differences ).
+          lo_changelog->getting_data( user = conv ZCSYUNAME( sy-uname )
+                                      date = sy-datum
+                                      time = sy-uzeit
+                                      customer = CUST_ID_OUTPUT_2
+                                      oper_type = 'MODIFY'
+                                      lt_flds_values = lt_differences ).
       endif.
 
+   when 'UPDATE_ADRES_BTN'.
+
       "### checking if user entered any other details. If not, this block with other details will be skipped.
-      if POSTAL_FIELD is not INITIAL or
-         CITY_FIELD is not initial or
-         STREET_FIELD is not initial or
-         HOME_FIELD is not initial or
-         APARTMENT_FIELD is not initial or
-         GENDER_FIELD is not initial or
-         PHONE_FIELD is not initial.
+*      if POSTAL_FIELD is not INITIAL or
+*         CITY_FIELD is not initial or
+*         STREET_FIELD is not initial or
+*         HOME_FIELD is not initial or
+*         APARTMENT_FIELD is not initial or
+*         GENDER_FIELD is not initial or
+*         PHONE_FIELD is not initial.
 
 
       "### getting data before update proceed to pass later to changelog updater
@@ -282,21 +285,31 @@ MODULE user_command_0100 INPUT.
           cust_postal_code,
           cust_street,
           cust_home_number,
-          cust_aprtm_number
+          cust_aprtm_number,
+          cust_city
           from zcust_details
-          into table @lt_other_data_before
+          into CORRESPONDING FIELDS OF table @lt_other_data_before
           where cust_id = @cust_id_output_2.
 
           data(lwa_other_data_before) = lt_other_data_before[ 1 ].
 
+          data(lt_adres_data_before_update) = value zcust_details(  cust_gender = lwa_other_data_before-cust_gender
+                                                                    cust_phone = lwa_other_data_before-cust_phone
+                                                                    cust_postal_code = lwa_other_data_before-cust_postal_code
+                                                                    cust_city = lwa_other_data_before-cust_city
+                                                                    cust_street = lwa_other_data_before-cust_street
+                                                                    cust_home_number = lwa_other_data_before-cust_home_number
+                                                                    cust_aprtm_number = lwa_other_data_before-cust_aprtm_number
+                                                                     ).
+
       "### validating if user's new data is correct
-        data lv_flag_other_details type string value ''.
+        data(lv_flag_other_details) = ''.
 
         if POSTAL_FIELD is not initial.
             data(lv_postal_code_check) = lo_data_validator->postal_code_validation( POSTAL_FIELD ).
             if lv_postal_code_check = abap_false.
                 lv_flag_other_details = 'X'.
-                MESSAGE i010(zmsgclass).
+                MESSAGE i010(zmsgclass). "MSG: Wrong postal code (only letters, digitis, space and symbols .-/ possible)
             endif.
         endif.
 
@@ -305,7 +318,7 @@ MODULE user_command_0100 INPUT.
                 data(lv_city_check) = lo_data_validator->city_validation( CITY_FIELD ).
                     if lv_city_check = abap_false.
                         lv_flag_other_details = 'X'.
-                        MESSAGE i010(zmsgclass).
+                        MESSAGE i010(zmsgclass). "MSG: Wrong postal code (only letters, digitis, space and symbols .-/ possible)
                     endif.
             endif.
         endif.
@@ -315,7 +328,7 @@ MODULE user_command_0100 INPUT.
                 data(lv_street_check) = lo_data_validator->street_validation( STREET_FIELD ).
                     if lv_street_check = abap_false.
                         lv_flag_other_details = 'X'.
-                        MESSAGE i011(zmsgclass).
+                        MESSAGE i011(zmsgclass). "MSG: Wrong city name (only letters and space possible)
                     endif.
             endif.
         endif.
@@ -325,7 +338,7 @@ MODULE user_command_0100 INPUT.
                 data(lv_home_check) = lo_data_validator->home_nr_validation( HOME_FIELD ).
                     if lv_home_check = abap_false.
                         lv_flag_other_details = 'X'.
-                        MESSAGE i012(zmsgclass).
+                        MESSAGE i012(zmsgclass). "MSG: Wrong value in home number (only numbers and letters possible)
                     endif.
             endif.
         endif.
@@ -336,7 +349,7 @@ MODULE user_command_0100 INPUT.
                 data(lv_apartm_check) = lo_data_validator->apartm_nr_validation( APARTMENT_FIELD ).
                     if lv_apartm_check = abap_false.
                         lv_flag_other_details = 'X'.
-                        MESSAGE i013(zmsgclass).
+                        MESSAGE i013(zmsgclass). "MSG: Wrong value in apartment number(only numbers and letters possible)
                     endif.
             endif.
         endif.
@@ -346,7 +359,7 @@ MODULE user_command_0100 INPUT.
                 data(lv_gender_check) = lo_data_validator->gender_validation( GENDER_FIELD ).
                     if lv_gender_check = abap_false.
                         lv_flag_other_details = 'X'.
-                        MESSAGE i014(zmsgclass).
+                        MESSAGE i014(zmsgclass). "MSG: Wrong value in gender field (only M - male and F - female possible)
                     endif.
             endif.
         endif.
@@ -356,7 +369,7 @@ MODULE user_command_0100 INPUT.
                 data(lv_phone_check) = lo_data_validator->phone_validation( PHONE_FIELD ).
                     if lv_phone_check = abap_false.
                         lv_flag_other_details = 'X'.
-                        MESSAGE i015(zmsgclass).
+                        MESSAGE i015(zmsgclass). "MSG: Wrong value in phone number (only digits and space possible)
                     endif.
             endif.
         endif.
@@ -370,15 +383,15 @@ MODULE user_command_0100 INPUT.
              lwa_other_data_before-cust_street = street_field and
              lwa_other_data_before-cust_home_number = home_field and
              lwa_other_data_before-cust_aprtm_number = apartment_field.
-             lv_update_flag = 'X'.
-             MESSAGE i009(zmsgclass).
+             lv_flag_other_details = 'X'.
+             MESSAGE i009(zmsgclass). "MSG: No changes applied -> no update needed.
           endif.
       endif.
 
 
       "### if data are correct and there are any differences, update will be executed
       if lv_flag_other_details = ''.
-        customer->update_customer( EXPORTING
+        customer->update_adres( EXPORTING
                                    lv_gender = GENDER_FIELD
                                    lv_phone = phone_field
                                    lv_postal_code = postal_field
@@ -387,12 +400,40 @@ MODULE user_command_0100 INPUT.
                                    lv_home_nr = home_field
                                    lv_apartm_nr = apartment_field
                                    lv_cust_id = cust_id_output_2 ).
-      endif.
+        MESSAGE i016(zmsgclass). "MSG: Update successful!
+
+      "### preparing data after update for changelog updater
 
 
+      data(lt_adres_data_after_update) = value zcust_details(  cust_gender = gender_field
+                                      cust_phone = phone_field
+                                      cust_postal_code = postal_field
+                                      cust_city = city_field
+                                      cust_street = street_field
+                                      cust_home_number = home_field
+                                      cust_aprtm_number = apartment_field
+                                     ).
+
+      data(lo_db_comparison_2) = new zcl_db_comparison(  ).
+
+      lo_db_comparison_2->data_comparison( exporting
+                                         lt_data_before_update = lt_adres_data_before_update
+                                         lt_data_after_update = lt_adres_data_after_update
+                                         importing
+                                         diff_table = data(lt_adres_differences)  ).
+
+      "### passing differences from compared data to changelog updater
+
+      lo_changelog->getting_data( user = conv ZCSYUNAME( sy-uname )
+                                  date = sy-datum
+                                  time = sy-uzeit
+                                  customer = CUST_ID_OUTPUT_2
+                                  oper_type = 'MODIFY'
+                                  lt_flds_values = lt_adres_differences ).
+       endif.
+*      endif.
 
 
-      endif.
 
     WHEN 'DELETE_BTN'.
 
@@ -416,10 +457,12 @@ MODULE user_command_0100 INPUT.
 
       TRY.
           customer->delete_customer( lv_cust_id = cust_id_output_2 ).
-          MESSAGE i004(zmsgclass).
+          MESSAGE i004(zmsgclass). "MSG: User deleted succesfully
         CATCH cx_sy_open_sql_db INTO DATA(lcx_error).
           MESSAGE lcx_error->get_text( ) TYPE 'i'.
       ENDTRY.
+
+      clear: input_first_name_2, input_last_name_2, input_email_2, cust_id_output_2.
 
     WHEN 'REFRESH'.
 
@@ -440,8 +483,6 @@ MODULE user_command_0100 INPUT.
 
     when 'ADRES_BTN'.
 
-        if input_first_name_2 is not initial and input_last_name_2 is not INITIAL and input_email_2 is not INITIAL.
-
             lv_flag_invis = 'do_change'.
             loop at screen.
                 if screen-group1 = '111'.
@@ -452,7 +493,32 @@ MODULE user_command_0100 INPUT.
                     endif.
                 endif.
             endloop.
-        endif.
+
+          if cust_id_output_2 is not initial.
+
+              select
+              cust_gender,
+              cust_phone,
+              cust_postal_code,
+              cust_street,
+              cust_home_number,
+              cust_aprtm_number,
+              cust_city
+              from zcust_details
+              into table @data(lt_adres_details)
+              where cust_id = @cust_id_output_2.
+
+              data(lwa_adres_details) = lt_adres_details[ 1 ].
+
+              postal_field = lwa_adres_details-cust_postal_code.
+              city_field = lwa_adres_details-cust_city.
+              street_field = lwa_adres_details-cust_street.
+              home_field = lwa_adres_details-cust_home_number.
+              apartment_field = lwa_adres_details-cust_aprtm_number.
+              gender_field = lwa_adres_details-cust_gender.
+              phone_field = lwa_adres_details-cust_phone.
+
+          endif.
 
     endcase.
 
