@@ -58,7 +58,8 @@ MODULE user_command_0100 INPUT.
   data(lo_data_validator) = new zcl_customer_data_validator(  ).
   data lv_create_flag type string value ''.
   data lv_update_flag type string value ''.
-
+  data lv_flag_invis type string value ''.
+  data lv_flag_change type string.
 
 *### Declaration of actions for each customer modification option:
 *### CLEAR_BTN - to clear all fields so user doesn't have to clear all manually
@@ -436,6 +437,20 @@ MODULE user_command_0100 INPUT.
     WHEN 'LOG_BTN'.
 
         call screen 0200 STARTING AT 50 50.
+
+    when 'ADRES_BTN'.
+
+        lv_flag_invis = 'do_change'.
+        loop at screen.
+            if screen-group1 = '111'.
+                if screen-invisible = 1.
+                    lv_flag_change = 'to visible'.
+                else.
+                    lv_flag_change = 'to invisible'.
+                endif.
+*                MODIFY SCREEN.
+            endif.
+        endloop.
 
     endcase.
 
