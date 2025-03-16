@@ -440,17 +440,19 @@ MODULE user_command_0100 INPUT.
 
     when 'ADRES_BTN'.
 
-        lv_flag_invis = 'do_change'.
-        loop at screen.
-            if screen-group1 = '111'.
-                if screen-invisible = 1 or screen-active = 0.
-                    lv_flag_change = 'to visible'.
-                else.
-                    lv_flag_change = 'to invisible'.
+        if input_first_name_2 is not initial and input_last_name_2 is not INITIAL and input_email_2 is not INITIAL.
+
+            lv_flag_invis = 'do_change'.
+            loop at screen.
+                if screen-group1 = '111'.
+                    if screen-invisible = 1 or screen-active = 0.
+                        lv_flag_change = 'to visible'.
+                    else.
+                        lv_flag_change = 'to invisible'.
+                    endif.
                 endif.
-*                MODIFY SCREEN.
-            endif.
-        endloop.
+            endloop.
+        endif.
 
     endcase.
 
