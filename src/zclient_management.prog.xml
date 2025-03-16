@@ -328,8 +328,8 @@
        <TYPE>PUSH</TYPE>
        <NAME>ADRESS_DETAILS_BTN</NAME>
        <TEXT>Show/hide_address_details</TEXT>
-       <LINE>010</LINE>
-       <COLUMN>117</COLUMN>
+       <LINE>013</LINE>
+       <COLUMN>061</COLUMN>
        <LENGTH>025</LENGTH>
        <VISLENGTH>025</VISLENGTH>
        <HEIGHT>001</HEIGHT>
@@ -340,42 +340,15 @@
       <RPY_DYFATC>
        <CONT_TYPE>SCREEN</CONT_TYPE>
        <CONT_NAME>SCREEN</CONT_NAME>
-       <TYPE>FRAME</TYPE>
-       <NAME>BOX_ADDRESS</NAME>
-       <TEXT>___________________________________________</TEXT>
-       <LINE>012</LINE>
-       <COLUMN>117</COLUMN>
-       <LENGTH>044</LENGTH>
-       <VISLENGTH>044</VISLENGTH>
-       <HEIGHT>015</HEIGHT>
-       <FORMAT>CHAR</FORMAT>
-       <REQU_ENTRY>N</REQU_ENTRY>
-      </RPY_DYFATC>
-      <RPY_DYFATC>
-       <CONT_TYPE>SCREEN</CONT_TYPE>
-       <CONT_NAME>SCREEN</CONT_NAME>
-       <TYPE>FRAME</TYPE>
-       <NAME>%#AUTOTEXT003</NAME>
-       <TEXT>________________________________________________</TEXT>
-       <LINE>013</LINE>
-       <COLUMN>061</COLUMN>
-       <LENGTH>049</LENGTH>
-       <VISLENGTH>049</VISLENGTH>
-       <HEIGHT>013</HEIGHT>
-       <FORMAT>CHAR</FORMAT>
-       <REQU_ENTRY>N</REQU_ENTRY>
-      </RPY_DYFATC>
-      <RPY_DYFATC>
-       <CONT_TYPE>SCREEN</CONT_TYPE>
-       <CONT_NAME>SCREEN</CONT_NAME>
        <TYPE>TEXT</TYPE>
        <NAME>ADDRESS_LABEL</NAME>
        <TEXT>Details:</TEXT>
-       <LINE>014</LINE>
+       <LINE>015</LINE>
        <COLUMN>062</COLUMN>
        <LENGTH>008</LENGTH>
        <VISLENGTH>008</VISLENGTH>
        <HEIGHT>001</HEIGHT>
+       <GROUP1>111</GROUP1>
        <FORMAT>CHAR</FORMAT>
        <REQU_ENTRY>N</REQU_ENTRY>
       </RPY_DYFATC>
@@ -385,8 +358,8 @@
        <TYPE>TEXT</TYPE>
        <NAME>POSTAL_LABEL</NAME>
        <TEXT>Postal_code:</TEXT>
-       <LINE>016</LINE>
-       <COLUMN>123</COLUMN>
+       <LINE>017</LINE>
+       <COLUMN>062</COLUMN>
        <LENGTH>012</LENGTH>
        <VISLENGTH>012</VISLENGTH>
        <HEIGHT>001</HEIGHT>
@@ -399,12 +372,14 @@
        <CONT_NAME>SCREEN</CONT_NAME>
        <TYPE>TEMPLATE</TYPE>
        <NAME>POSTAL_FIELD</NAME>
-       <TEXT>______________</TEXT>
-       <LINE>016</LINE>
-       <COLUMN>138</COLUMN>
-       <LENGTH>014</LENGTH>
+       <TEXT>____________________________________________________________________________________________________________________________________</TEXT>
+       <ROLLING>X</ROLLING>
+       <LINE>017</LINE>
+       <COLUMN>076</COLUMN>
+       <LENGTH>255</LENGTH>
        <VISLENGTH>014</VISLENGTH>
        <HEIGHT>001</HEIGHT>
+       <GROUP1>111</GROUP1>
        <FORMAT>CHAR</FORMAT>
        <INPUT_FLD>X</INPUT_FLD>
        <OUTPUT_FLD>X</OUTPUT_FLD>
@@ -415,11 +390,12 @@
        <TYPE>TEXT</TYPE>
        <NAME>CITY_LABEL</NAME>
        <TEXT>City:</TEXT>
-       <LINE>018</LINE>
+       <LINE>019</LINE>
        <COLUMN>062</COLUMN>
        <LENGTH>005</LENGTH>
        <VISLENGTH>005</VISLENGTH>
        <HEIGHT>001</HEIGHT>
+       <GROUP1>111</GROUP1>
        <FORMAT>CHAR</FORMAT>
        <REQU_ENTRY>N</REQU_ENTRY>
       </RPY_DYFATC>
@@ -429,11 +405,12 @@
        <TYPE>TEMPLATE</TYPE>
        <NAME>CITY_FIELD</NAME>
        <TEXT>____________________________</TEXT>
-       <LINE>018</LINE>
+       <LINE>019</LINE>
        <COLUMN>069</COLUMN>
        <LENGTH>028</LENGTH>
        <VISLENGTH>028</VISLENGTH>
        <HEIGHT>001</HEIGHT>
+       <GROUP1>111</GROUP1>
        <FORMAT>CHAR</FORMAT>
        <INPUT_FLD>X</INPUT_FLD>
        <OUTPUT_FLD>X</OUTPUT_FLD>
@@ -444,11 +421,12 @@
        <TYPE>TEXT</TYPE>
        <NAME>STREET_LABEL</NAME>
        <TEXT>Street:</TEXT>
-       <LINE>020</LINE>
+       <LINE>021</LINE>
        <COLUMN>062</COLUMN>
        <LENGTH>007</LENGTH>
        <VISLENGTH>007</VISLENGTH>
        <HEIGHT>001</HEIGHT>
+       <GROUP1>111</GROUP1>
        <FORMAT>CHAR</FORMAT>
        <REQU_ENTRY>N</REQU_ENTRY>
       </RPY_DYFATC>
@@ -458,11 +436,12 @@
        <TYPE>TEMPLATE</TYPE>
        <NAME>STREET_FIELD</NAME>
        <TEXT>__________________________</TEXT>
-       <LINE>020</LINE>
+       <LINE>021</LINE>
        <COLUMN>071</COLUMN>
        <LENGTH>026</LENGTH>
        <VISLENGTH>026</VISLENGTH>
        <HEIGHT>001</HEIGHT>
+       <GROUP1>111</GROUP1>
        <FORMAT>CHAR</FORMAT>
        <INPUT_FLD>X</INPUT_FLD>
        <OUTPUT_FLD>X</OUTPUT_FLD>
@@ -473,11 +452,12 @@
        <TYPE>TEXT</TYPE>
        <NAME>HOME_LABEL</NAME>
        <TEXT>Home_number:</TEXT>
-       <LINE>022</LINE>
+       <LINE>023</LINE>
        <COLUMN>062</COLUMN>
        <LENGTH>012</LENGTH>
        <VISLENGTH>012</VISLENGTH>
        <HEIGHT>001</HEIGHT>
+       <GROUP1>111</GROUP1>
        <FORMAT>CHAR</FORMAT>
        <REQU_ENTRY>N</REQU_ENTRY>
       </RPY_DYFATC>
@@ -487,11 +467,12 @@
        <TYPE>TEMPLATE</TYPE>
        <NAME>HOME_FIELD</NAME>
        <TEXT>______</TEXT>
-       <LINE>022</LINE>
-       <COLUMN>077</COLUMN>
+       <LINE>023</LINE>
+       <COLUMN>076</COLUMN>
        <LENGTH>006</LENGTH>
        <VISLENGTH>006</VISLENGTH>
        <HEIGHT>001</HEIGHT>
+       <GROUP1>111</GROUP1>
        <FORMAT>CHAR</FORMAT>
        <INPUT_FLD>X</INPUT_FLD>
        <OUTPUT_FLD>X</OUTPUT_FLD>
@@ -502,11 +483,12 @@
        <TYPE>TEXT</TYPE>
        <NAME>APARTMENT_LABEL</NAME>
        <TEXT>Apartment_nr:</TEXT>
-       <LINE>022</LINE>
-       <COLUMN>086</COLUMN>
+       <LINE>023</LINE>
+       <COLUMN>084</COLUMN>
        <LENGTH>013</LENGTH>
        <VISLENGTH>013</VISLENGTH>
        <HEIGHT>001</HEIGHT>
+       <GROUP1>111</GROUP1>
        <FORMAT>CHAR</FORMAT>
        <REQU_ENTRY>N</REQU_ENTRY>
       </RPY_DYFATC>
@@ -516,11 +498,12 @@
        <TYPE>TEMPLATE</TYPE>
        <NAME>APARTMENT_FIELD</NAME>
        <TEXT>______</TEXT>
-       <LINE>022</LINE>
-       <COLUMN>102</COLUMN>
+       <LINE>023</LINE>
+       <COLUMN>099</COLUMN>
        <LENGTH>006</LENGTH>
        <VISLENGTH>006</VISLENGTH>
        <HEIGHT>001</HEIGHT>
+       <GROUP1>111</GROUP1>
        <FORMAT>CHAR</FORMAT>
        <INPUT_FLD>X</INPUT_FLD>
        <OUTPUT_FLD>X</OUTPUT_FLD>
@@ -531,11 +514,12 @@
        <TYPE>TEXT</TYPE>
        <NAME>GENDER_LABEL</NAME>
        <TEXT>Gender:</TEXT>
-       <LINE>024</LINE>
+       <LINE>025</LINE>
        <COLUMN>062</COLUMN>
        <LENGTH>007</LENGTH>
        <VISLENGTH>007</VISLENGTH>
        <HEIGHT>001</HEIGHT>
+       <GROUP1>111</GROUP1>
        <FORMAT>CHAR</FORMAT>
        <REQU_ENTRY>N</REQU_ENTRY>
       </RPY_DYFATC>
@@ -545,11 +529,12 @@
        <TYPE>TEMPLATE</TYPE>
        <NAME>GENDER_FIELD</NAME>
        <TEXT>___</TEXT>
-       <LINE>024</LINE>
+       <LINE>025</LINE>
        <COLUMN>071</COLUMN>
        <LENGTH>003</LENGTH>
        <VISLENGTH>003</VISLENGTH>
        <HEIGHT>001</HEIGHT>
+       <GROUP1>111</GROUP1>
        <FORMAT>CHAR</FORMAT>
        <INPUT_FLD>X</INPUT_FLD>
        <OUTPUT_FLD>X</OUTPUT_FLD>
@@ -560,11 +545,12 @@
        <TYPE>TEXT</TYPE>
        <NAME>PHONE_LABEL</NAME>
        <TEXT>Phone:</TEXT>
-       <LINE>024</LINE>
-       <COLUMN>080</COLUMN>
+       <LINE>025</LINE>
+       <COLUMN>079</COLUMN>
        <LENGTH>006</LENGTH>
        <VISLENGTH>006</VISLENGTH>
        <HEIGHT>001</HEIGHT>
+       <GROUP1>111</GROUP1>
        <FORMAT>CHAR</FORMAT>
        <REQU_ENTRY>N</REQU_ENTRY>
       </RPY_DYFATC>
@@ -574,86 +560,12 @@
        <TYPE>TEMPLATE</TYPE>
        <NAME>PHONE_FIELD</NAME>
        <TEXT>_______________</TEXT>
-       <LINE>024</LINE>
-       <COLUMN>089</COLUMN>
+       <LINE>025</LINE>
+       <COLUMN>087</COLUMN>
        <LENGTH>015</LENGTH>
        <VISLENGTH>015</VISLENGTH>
        <HEIGHT>001</HEIGHT>
-       <FORMAT>CHAR</FORMAT>
-       <INPUT_FLD>X</INPUT_FLD>
-       <OUTPUT_FLD>X</OUTPUT_FLD>
-      </RPY_DYFATC>
-      <RPY_DYFATC>
-       <CONT_TYPE>SCREEN</CONT_TYPE>
-       <CONT_NAME>SCREEN</CONT_NAME>
-       <TYPE>OKCODE</TYPE>
-       <TEXT>____________________</TEXT>
-       <LENGTH>020</LENGTH>
-       <VISLENGTH>020</VISLENGTH>
-       <HEIGHT>001</HEIGHT>
-       <FORMAT>CHAR</FORMAT>
-       <INPUT_FLD>X</INPUT_FLD>
-      </RPY_DYFATC>
-     </FIELDS>
-    </item>
-    <item>
-     <HEADER>
-      <PROGRAM>ZCLIENT_MANAGEMENT</PROGRAM>
-      <SCREEN>0105</SCREEN>
-      <LANGUAGE>E</LANGUAGE>
-      <DESCRIPT>Subscreen for address details</DESCRIPT>
-      <TYPE>I</TYPE>
-      <NEXTSCREEN>0105</NEXTSCREEN>
-      <LINES>027</LINES>
-      <COLUMNS>120</COLUMNS>
-     </HEADER>
-     <CONTAINERS>
-      <RPY_DYCATT>
-       <TYPE>SCREEN</TYPE>
-       <NAME>SCREEN</NAME>
-      </RPY_DYCATT>
-     </CONTAINERS>
-     <FIELDS>
-      <RPY_DYFATC>
-       <CONT_TYPE>SCREEN</CONT_TYPE>
-       <CONT_NAME>SCREEN</CONT_NAME>
-       <TYPE>TEXT</TYPE>
-       <NAME>GENERAL_LABEL</NAME>
-       <TEXT>Address_details:</TEXT>
-       <LINE>002</LINE>
-       <COLUMN>003</COLUMN>
-       <LENGTH>016</LENGTH>
-       <VISLENGTH>016</VISLENGTH>
-       <HEIGHT>001</HEIGHT>
-       <FORMAT>CHAR</FORMAT>
-       <REQU_ENTRY>N</REQU_ENTRY>
-      </RPY_DYFATC>
-      <RPY_DYFATC>
-       <CONT_TYPE>SCREEN</CONT_TYPE>
-       <CONT_NAME>SCREEN</CONT_NAME>
-       <TYPE>TEXT</TYPE>
-       <NAME>POSTAL_CODE_LABEL</NAME>
-       <TEXT>Postal_code:</TEXT>
-       <LINE>004</LINE>
-       <COLUMN>003</COLUMN>
-       <LENGTH>012</LENGTH>
-       <VISLENGTH>012</VISLENGTH>
-       <HEIGHT>001</HEIGHT>
-       <FORMAT>CHAR</FORMAT>
-       <REQU_ENTRY>N</REQU_ENTRY>
-       <LABELLEFT>X</LABELLEFT>
-      </RPY_DYFATC>
-      <RPY_DYFATC>
-       <CONT_TYPE>SCREEN</CONT_TYPE>
-       <CONT_NAME>SCREEN</CONT_NAME>
-       <TYPE>TEMPLATE</TYPE>
-       <NAME>POSTAL_FIELD</NAME>
-       <TEXT>_______________</TEXT>
-       <LINE>004</LINE>
-       <COLUMN>017</COLUMN>
-       <LENGTH>015</LENGTH>
-       <VISLENGTH>015</VISLENGTH>
-       <HEIGHT>001</HEIGHT>
+       <GROUP1>111</GROUP1>
        <FORMAT>CHAR</FORMAT>
        <INPUT_FLD>X</INPUT_FLD>
        <OUTPUT_FLD>X</OUTPUT_FLD>

@@ -11,9 +11,9 @@ MODULE status_0100 OUTPUT.
     loop at screen.
             if screen-group1 = '111'.
                 if lv_flag_change = 'to visible'.
-                    screen-invisible = 0.
+                    screen-active = 1.
                 elseif lv_flag_change = 'to invisible'.
-                    screen-invisible = 1.
+                    screen-active = 0.
                 endif.
                 MODIFY SCREEN.
                 lv_flag_invis = ''.

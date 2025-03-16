@@ -443,7 +443,7 @@ MODULE user_command_0100 INPUT.
         lv_flag_invis = 'do_change'.
         loop at screen.
             if screen-group1 = '111'.
-                if screen-invisible = 1.
+                if screen-invisible = 1 or screen-active = 0.
                     lv_flag_change = 'to visible'.
                 else.
                     lv_flag_change = 'to invisible'.
