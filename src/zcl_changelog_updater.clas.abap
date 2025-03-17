@@ -61,12 +61,15 @@ CLASS zcl_changelog_updater IMPLEMENTATION.
     endloop.
 
     me->inserting_row( lt_filled_table ).
+*    clear lt_filled_table.
 
   ENDMETHOD.
 
   METHOD inserting_row.
 
     insert zcust_changelog from table lt_ready_table.
+
+
 
   ENDMETHOD.
 

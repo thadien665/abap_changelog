@@ -262,6 +262,7 @@ MODULE user_command_0100 INPUT.
                                       customer = CUST_ID_OUTPUT_2
                                       oper_type = 'MODIFY'
                                       lt_flds_values = lt_differences ).
+          clear lt_differences.
       endif.
 
    when 'UPDATE_ADRES_BTN'.
