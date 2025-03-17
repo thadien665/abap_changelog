@@ -144,55 +144,21 @@ CLASS zcl_customer IMPLEMENTATION.
     data: lt_set_builder type table of string,
           lwa_set_builder type string.
 
-*    if lv_postal_code is not initial or
-*       lv_city is not initial or
-*       lv_street is not initial or
-*       lv_home_nr is not initial or
-*       lv_apartm_nr is not initial or
-*       lv_phone is not initial or
-*       lv_gender is not initial.
+          lt_set_builder = value #( ( |cust_postal_code = @lv_postal_code| )
+                                    ( |cust_city = @lv_city| )
+                                    ( |cust_street = @lv_street| )
+                                    ( |cust_home_number = @lv_home_nr| )
+                                    ( |cust_aprtm_number = @lv_apartm_nr| )
+                                    ( |cust_phone = @lv_phone| )
+                                    ( |cust_gender = @lv_gender| )
+                                     ).
 
-
-*        if lv_postal_code is not initial.
-            APPEND |cust_postal_code = @lv_postal_code| TO lt_set_builder.
-*        endif.
-
-*        if lv_city is not initial.
-            APPEND |cust_city = @lv_city| TO lt_set_builder.
-*        endif.
-
-*        if lv_street is not initial.
-            APPEND |cust_street = @lv_street| TO lt_set_builder.
-*        endif.
-
-*        if lv_home_nr is not initial.
-            APPEND |cust_home_number = @lv_home_nr| TO lt_set_builder.
-*        endif.
-
-*        if lv_apartm_nr is not initial.
-            APPEND |cust_aprtm_number = @lv_apartm_nr| TO lt_set_builder.
-*        endif.
-
-*        if lv_phone is not initial.
-            APPEND |cust_phone = @lv_phone| TO lt_set_builder.
-*        endif.
-
-*        if lv_gender is not initial.
-            APPEND |cust_gender = @lv_gender| TO lt_set_builder.
-*        endif.
-
-        if lines( lt_set_builder ) = 1.
-            lwa_set_builder = lt_set_builder[ 1 ].
-        else.
-            CONCATENATE LINES OF lt_set_builder INTO lwa_set_builder SEPARATED BY ', '.
-        endif.
+        CONCATENATE LINES OF lt_set_builder INTO lwa_set_builder SEPARATED BY ', '.
 
         UPDATE zcust_details
         SET (lwa_set_builder)
         WHERE cust_id = @lv_cust_id.
         COMMIT WORK.
-
-*    endif.
 
   ENDMETHOD.
 

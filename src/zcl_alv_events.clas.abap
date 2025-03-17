@@ -55,13 +55,9 @@ CLASS zcl_alv_events IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD returning_data.
+
     final_data1 = me->prepared_data.
 
-*  me->prepared_data = prepared_data.
-*  if me->final_data1 is initial.
-*    me->final_data1 = me->prepared_data.
-*  endif.
-*    final_data1 = me->final_data1.
   ENDMETHOD.
 
 ENDCLASS.

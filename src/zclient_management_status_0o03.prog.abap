@@ -33,12 +33,6 @@ MODULE status_0200 OUTPUT.
 
     data lt_changelog_data type table of zcust_changelog.
 
-* select *
-* from zcust_changelog
-* into table @data(lt_changelog_data)
-* where cur_date = @sy-datum.
-
-
  lo_changelog_alv_grid->set_table_for_first_display( CHANGING
                                                         it_outtab = lt_changelog_data
                                                         it_fieldcatalog = lt_changelog_fieldcatalog ).
