@@ -5,26 +5,26 @@ CLASS zcl_alv_events DEFINITION
 
   PUBLIC SECTION.
 
-    methods: hotspot FOR EVENT HOTSPOT_CLICK of cl_gui_alv_grid
-                            importing E_ROW_ID,
+    METHODS: hotspot FOR EVENT hotspot_click OF cl_gui_alv_grid
+      IMPORTING e_row_id,
 
-             prep_data importing lt_needed_data type zcl_customer=>ls_cust_data OPTIONAL
-                           lt_row_data type zcl_customer=>ls_data OPTIONAL
-                           RETURNING VALUE(final_data) type zcl_customer=>ls_data,
-             returning_data importing prepared_data type zcl_customer=>ls_data optional
-                            RETURNING VALUE(final_data1) type zcl_customer=>ls_data,
-             changing_data importing prepared_data type zcl_customer=>ls_data.
+      prep_data IMPORTING lt_needed_data    TYPE zcl_customer=>ls_cust_data OPTIONAL
+                          lt_row_data       TYPE zcl_customer=>ls_data OPTIONAL
+                RETURNING VALUE(final_data) TYPE zcl_customer=>ls_data,
+      returning_data IMPORTING prepared_data      TYPE zcl_customer=>ls_data OPTIONAL
+                     RETURNING VALUE(final_data1) TYPE zcl_customer=>ls_data,
+      changing_data IMPORTING prepared_data TYPE zcl_customer=>ls_data.
 
 
-    data: row_data type zcl_customer=>ls_data.
+    DATA: row_data TYPE zcl_customer=>ls_data.
 
 
   PROTECTED SECTION.
   PRIVATE SECTION.
 
-  data final_data1 type zcl_customer=>ls_data.
-  data lwa_imported_data type zcl_customer=>ls_cust_data.
-  data prepared_data type zcl_customer=>ls_data.
+    DATA final_data1 TYPE zcl_customer=>ls_data.
+    DATA lwa_imported_data TYPE zcl_customer=>ls_cust_data.
+    DATA prepared_data TYPE zcl_customer=>ls_data.
 
 ENDCLASS.
 
@@ -39,14 +39,14 @@ CLASS zcl_alv_events IMPLEMENTATION.
 
   METHOD hotspot.
 
-    read table lwa_imported_data into row_data index E_ROW_ID-index.
+    READ TABLE lwa_imported_data INTO row_data INDEX e_row_id-index.
     me->changing_data( prepared_data = row_data ).
 
     sy-ucomm = 'REFRESH'.
 
     CALL FUNCTION 'SAPGUI_SET_FUNCTIONCODE'
-    EXPORTING
-      functioncode = 'REFRESH'.
+      EXPORTING
+        functioncode = 'REFRESH'.
 
   ENDMETHOD.
 

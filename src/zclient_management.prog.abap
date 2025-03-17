@@ -66,10 +66,11 @@ LOAD-OF-PROGRAM.
       ( fieldname = 'cust_email' col_pos = 3 scrtext_m = 'email' )
    ).
 
-  INCLUDE zclient_management_user_comi01.
 
-  INCLUDE zclient_management_status_0o02.
+  INCLUDE zclient_management_user_comi01. "PAI of 100
 
-  INCLUDE zclient_management_status_0o03.
+  INCLUDE zclient_management_status_0o02. "PBO of 100
 
-  INCLUDE zclient_management_user_comi02.
+  INCLUDE zclient_management_status_0o03. "PBO of 200
+
+  INCLUDE zclient_management_user_comi02. "PAI of 200

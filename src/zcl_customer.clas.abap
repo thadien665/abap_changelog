@@ -21,8 +21,8 @@ CLASS zcl_customer DEFINITION
           lv_last_name  TYPE zcname
           lv_email      TYPE zcemail
         EXPORTING
-          status type abap_bool
-          customer_id type zcid,
+          status        TYPE abap_bool
+          customer_id   TYPE zcid,
 
       search_cusomer
         IMPORTING
@@ -34,28 +34,28 @@ CLASS zcl_customer DEFINITION
 
       update_customer
         IMPORTING
-          lv_first_name TYPE zcname optional
-          lv_last_name  TYPE zcname optional
-          lv_email      TYPE zcemail optional
-          lv_cust_id    TYPE zcid optional,
+          lv_first_name TYPE zcname OPTIONAL
+          lv_last_name  TYPE zcname OPTIONAL
+          lv_email      TYPE zcemail OPTIONAL
+          lv_cust_id    TYPE zcid OPTIONAL,
 
       update_adres
-        importing
-          lv_postal_code type zcpostalcode OPTIONAL
-          lv_city       type zccity optional
-          lv_street     type zcstreet optional
-          lv_home_nr    type zchnumber optional
-          lv_apartm_nr  type zcanumber optional
-          lv_phone      type zcphone optional
-          lv_gender     type zcgender optional
-          lv_cust_id    TYPE zcid optional,
+        IMPORTING
+          lv_postal_code TYPE zcpostalcode OPTIONAL
+          lv_city        TYPE zccity OPTIONAL
+          lv_street      TYPE zcstreet OPTIONAL
+          lv_home_nr     TYPE zchnumber OPTIONAL
+          lv_apartm_nr   TYPE zcanumber OPTIONAL
+          lv_phone       TYPE zcphone OPTIONAL
+          lv_gender      TYPE zcgender OPTIONAL
+          lv_cust_id     TYPE zcid OPTIONAL,
 
       delete_customer
         IMPORTING
           lv_cust_id TYPE zcid.
 
-    data: lo_changelog type ref to zcl_changelog_updater,
-          lt_changelog_fld_values type zcl_changelog_updater=>lt_flds_values.
+    DATA: lo_changelog            TYPE REF TO zcl_changelog_updater,
+          lt_changelog_fld_values TYPE zcl_changelog_updater=>lt_flds_values.
 
 
 
@@ -67,6 +67,17 @@ ENDCLASS.
 
 CLASS zcl_customer IMPLEMENTATION.
   METHOD create_customer.
+
+    "### After user's removal, his customer_id is removed from table and at the same time
+    "### added to storage 'zcust_id_storage'. It was one of two ways possible in the program.
+    "### Second solution was based on looping at the customer's table every time - which, from
+    "### optimization point, could be heavier than storage solution.
+    "### ZCUST_DETAILS DDIC table (on which this program works) is designed for max of around
+    "### 30k users, so solution choice is very subjective.
+    "### If storage contains any row (is not empty), create process will take first available
+    "### ID from storage.
+    "### If storage is empty, create process will take highest possible ID from
+    "### zcust_details + 1.
 
     DATA: lv_new_customer TYPE zcust_details,
           lv_int_cust_id  TYPE i.
@@ -106,7 +117,9 @@ CLASS zcl_customer IMPLEMENTATION.
     DATA lv_where_builder TYPE string.
     DATA lt_builder_parts TYPE TABLE OF string.
 
-
+    "### Because searching could be performed on at least one data (one of names or only email)
+    "### the WHERE clause is created dynamically:
+    "### based on appending rows to table -> concatenating all rows to one string.
     IF lv_first_name IS NOT INITIAL.
       APPEND |cust_fname = @lv_first_name| TO lt_builder_parts.
     ENDIF.
@@ -139,26 +152,31 @@ CLASS zcl_customer IMPLEMENTATION.
 
   ENDMETHOD.
 
-  method update_adres.
+  METHOD update_adres.
 
-    data: lt_set_builder type table of string,
-          lwa_set_builder type string.
+    DATA: lt_set_builder  TYPE TABLE OF string,
+          lwa_set_builder TYPE string.
 
-          lt_set_builder = value #( ( |cust_postal_code = @lv_postal_code| )
-                                    ( |cust_city = @lv_city| )
-                                    ( |cust_street = @lv_street| )
-                                    ( |cust_home_number = @lv_home_nr| )
-                                    ( |cust_aprtm_number = @lv_apartm_nr| )
-                                    ( |cust_phone = @lv_phone| )
-                                    ( |cust_gender = @lv_gender| )
-                                     ).
+    "### Update address function is accepting removal of some fields (f.e. when user want
+    "### to remove phone number from customer's account), so we are not using appends, but creating
+    "### table from strings with statements.
+    "### If we would like to change the process and block user from removing data, then we can apply
+    "### 'append' solution from create function.
+    lt_set_builder = VALUE #( ( |cust_postal_code = @lv_postal_code| )
+                              ( |cust_city = @lv_city| )
+                              ( |cust_street = @lv_street| )
+                              ( |cust_home_number = @lv_home_nr| )
+                              ( |cust_aprtm_number = @lv_apartm_nr| )
+                              ( |cust_phone = @lv_phone| )
+                              ( |cust_gender = @lv_gender| )
+                               ).
 
-        CONCATENATE LINES OF lt_set_builder INTO lwa_set_builder SEPARATED BY ', '.
+    CONCATENATE LINES OF lt_set_builder INTO lwa_set_builder SEPARATED BY ', '.
 
-        UPDATE zcust_details
-        SET (lwa_set_builder)
-        WHERE cust_id = @lv_cust_id.
-        COMMIT WORK.
+    UPDATE zcust_details
+    SET (lwa_set_builder)
+    WHERE cust_id = @lv_cust_id.
+    COMMIT WORK.
 
   ENDMETHOD.
 

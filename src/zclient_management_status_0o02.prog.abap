@@ -8,39 +8,41 @@
 *&---------------------------------------------------------------------*
 MODULE status_0100 OUTPUT.
 
-if sy-ucomm <> 'ADRES_BTN'.
-loop at screen.
-        if screen-group1 = '111'.
-            screen-active = 0.
-            MODIFY SCREEN.
-        endif.
-    endloop.
-endif.
+  "### Hiding address fields and labels at program launch.
+  IF sy-ucomm <> 'ADRES_BTN'.
+    LOOP AT SCREEN.
+      IF screen-group1 = '111'.
+        screen-active = 0.
+        MODIFY SCREEN.
+      ENDIF.
+    ENDLOOP.
+  ENDIF.
 
-if lv_flag_invis = 'do_change'.
-loop at screen.
-        if screen-group1 = '111'.
-            if lv_flag_change = 'to visible'.
-                screen-active = 1.
-                screen-invisible = 0.
-            elseif lv_flag_change = 'to invisible'.
-                screen-active = 0.
-                screen-invisible = 1.
-            endif.
-            MODIFY SCREEN.
-            lv_flag_invis = ''.
-        endif.
-    endloop.
-endif.
+  "### Related to 'ADRES_BTN' option from 100 PAI - to show/hide address fields.
+  IF lv_flag_invis = 'do_change'.
+    LOOP AT SCREEN.
+      IF screen-group1 = '111'.
+        IF lv_flag_change = 'to visible'.
+          screen-active = 1.
+          screen-invisible = 0.
+        ELSEIF lv_flag_change = 'to invisible'.
+          screen-active = 0.
+          screen-invisible = 1.
+        ENDIF.
+        MODIFY SCREEN.
+        lv_flag_invis = ''.
+      ENDIF.
+    ENDLOOP.
+  ENDIF.
 
- SET PF-STATUS 'STANDARD'.
- SET TITLEBAR 'CUSTOMER MANAGEMENT'.
+  SET PF-STATUS 'STANDARD'.
+  SET TITLEBAR 'CUSTOMER MANAGEMENT'.
 
 
 
-if lo_alv_events is initial.
-create OBJECT lo_alv_events.
-endif.
+  IF lo_alv_events IS INITIAL.
+    CREATE OBJECT lo_alv_events.
+  ENDIF.
 
 
 

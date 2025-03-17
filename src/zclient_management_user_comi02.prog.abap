@@ -8,24 +8,27 @@
 *----------------------------------------------------------------------*
 MODULE user_command_0200 INPUT.
 
-    case sy-ucomm.
+  "### Only two options are (at this stage) needed:
+  "### SRCH_B2 - to search for entries
+  "### BACK - to leave changelog.
+  CASE sy-ucomm.
 
-        when 'SRCH_B2'.
+    WHEN 'SRCH_B2'.
 
-            if lt_changelog_data is not initial.
-                clear lt_changelog_data.
-            endif.
+      IF lt_changelog_data IS NOT INITIAL.
+        CLEAR lt_changelog_data.
+      ENDIF.
 
-            select *
-            from zcust_changelog
-            into table @lt_changelog_data
-            where customer_id = @USER_ID.
+      SELECT *
+      FROM zcust_changelog
+      INTO TABLE @lt_changelog_data
+      WHERE customer_id = @user_id.
 
-            lo_changelog_alv_grid->refresh_table_display(  ).
+      lo_changelog_alv_grid->refresh_table_display(  ).
 
-        when 'BACK'.
-            leave to screen 0.
+    WHEN 'BACK'.
+      LEAVE TO SCREEN 0.
 
-    endcase.
+  ENDCASE.
 
 ENDMODULE.

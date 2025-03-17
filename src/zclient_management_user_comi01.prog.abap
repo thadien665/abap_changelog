@@ -12,7 +12,12 @@ MODULE user_command_0100 INPUT.
 *### CLEAR_BTN - to clear all fields so user doesn't have to clear all manually
 *### CREATE_BTN - new customer creation
 *### SEARCH_BTN - searching for customer
-*### UPDATE_BTN - updating data of customer
+*### UPDATE_BTN - updating basic data (names and email) of customer
+*### UPDATE_ADRES_BTN - updating address data of customer
+*### REFRESH - actually not controlled by user - used only for ALV hotspot event
+*### BACK - to leave transaction code of program
+*### LOG_BTN - to open changelog screen
+*### ADRES_BTN - to show/hide customer's address fields and labels
 *### DELETE_BTN - removing customer.
 
   CASE sy-ucomm.
@@ -31,6 +36,7 @@ MODULE user_command_0100 INPUT.
         lv_create_flag = ''.
       ENDIF.
 
+      "### Validating correctness of data provided by user before creating new entry
       IF lv_create_flag = ''.
         DATA(lv_fname_validation) = lo_data_validator->names_validation( EXPORTING
                                                                             name = input_first_name
@@ -68,6 +74,7 @@ MODULE user_command_0100 INPUT.
 
       ENDIF.
 
+      "### If data is correct, creation will be done with adding new entries in changelog.
       IF lv_create_flag = ''.
         customer->create_customer( EXPORTING
                                    lv_first_name = input_first_name
@@ -102,10 +109,12 @@ MODULE user_command_0100 INPUT.
 
     WHEN 'SEARCH_BTN'.
 
+      "### Search should be available with at least one criteria.
       IF input_first_name IS INITIAL AND input_last_name IS INITIAL AND input_email IS INITIAL.
         MESSAGE s003(zmsgclass). "MSG: Please enter at least one search criteria
       ENDIF.
 
+      "### Creating search result ALV table in subscreen_1 and setting hotspot event.
       IF lo_alv_grid IS INITIAL.
         lo_alv_container = NEW cl_gui_custom_container( 'SUBSCREEN_1' ).
         lo_alv_grid = NEW cl_gui_alv_grid( lo_alv_container ).
@@ -139,22 +148,25 @@ MODULE user_command_0100 INPUT.
 
         lo_alv_grid->refresh_table_display(  ).
 
-
       ENDIF.
 
 
 
     WHEN 'UPDATE_BTN'.
 
+      "### Update process uses lv_update_flag to distinguish if any validation is wrong
+      "### to eventually stop the process and show message window to user.
+
       lv_update_flag = ''.
       DATA(lo_db_comparison) = NEW zcl_db_comparison(  ).
 
+      "### Gathering data from before the update for further changelog entries
       DATA(lwa_data_before) = lo_alv_events->returning_data(  ).
 
       DATA(lt_data_before) = VALUE zcust_details( cust_fname = lwa_data_before-cust_fname
                                                 cust_lname = lwa_data_before-cust_lname
                                                 cust_email = lwa_data_before-cust_email ).
-
+      "### Validation of user's input.
       DATA(lv_2nd_fname_validation) = lo_data_validator->names_validation( input_first_name_2 ).
       IF lv_2nd_fname_validation = abap_false.
         lv_update_flag = 'X'.
@@ -177,6 +189,7 @@ MODULE user_command_0100 INPUT.
         ENDIF.
       ENDIF.
 
+      "### Checking if there is actually any changes to be updated - if not, process will stop here.
       IF lv_update_flag = ''.
         IF lwa_data_before-cust_fname = input_first_name_2 AND
            lwa_data_before-cust_lname = input_last_name_2 AND
@@ -186,6 +199,7 @@ MODULE user_command_0100 INPUT.
         ENDIF.
       ENDIF.
 
+      "### If differences are present, then update will be done.
       IF lv_update_flag = ''.
         customer->update_customer( lv_first_name = input_first_name_2
                                    lv_last_name = input_last_name_2
@@ -193,10 +207,11 @@ MODULE user_command_0100 INPUT.
                                    lv_cust_id = cust_id_output_2 ).
         MESSAGE i016(zmsgclass). "MSG: Update successful!
 
+        "### Gathering data after update for changelog entries.
         DATA(lt_data_after) = VALUE zcust_details( cust_fname = input_first_name_2
                                                   cust_lname = input_last_name_2
                                                   cust_email = input_email_2 ).
-
+        "### Comparing data before and after update - lt_differences will contain future changelog entries.
         lo_db_comparison->data_comparison( EXPORTING
                                              lt_data_before_update = lt_data_before
                                              lt_data_after_update = lt_data_after
@@ -374,6 +389,7 @@ MODULE user_command_0100 INPUT.
 
     WHEN 'DELETE_BTN'.
 
+      "### Getting data based on customer_id from screen (deleting user only possible after search).
       SELECT SINGLE *
       FROM zcust_details
       INTO @DATA(lwa_data_to_remove)
@@ -385,6 +401,7 @@ MODULE user_command_0100 INPUT.
                                  ( fld_name = 'Email' v_before = lwa_data_to_remove-cust_email v_after = '' )
                                   ).
 
+      "### Passing prepared data to changelog updater.
       lo_changelog->getting_data( user = CONV zcsyuname( sy-uname )
                                   date = sy-datum
                                   time = sy-uzeit
@@ -392,6 +409,7 @@ MODULE user_command_0100 INPUT.
                                   oper_type = 'DELETE'
                                   lt_flds_values = lt_data_changes ).
 
+      "### Removing user.
       TRY.
           customer->delete_customer( lv_cust_id = cust_id_output_2 ).
           MESSAGE i004(zmsgclass). "MSG: User deleted succesfully
@@ -399,10 +417,12 @@ MODULE user_command_0100 INPUT.
           MESSAGE lcx_error->get_text( ) TYPE 'i'.
       ENDTRY.
 
+      "### Clearing search result fields after removed user.
       CLEAR: input_first_name_2, input_last_name_2, input_email_2, cust_id_output_2.
 
     WHEN 'REFRESH'.
 
+      "### Used only by ALV hotspot event to fill in the output_2 fields after hotspot click.
       DATA(lwa_clicked_data) = lo_alv_events->returning_data( ).
 
       input_first_name_2 = lwa_clicked_data-cust_fname.
@@ -420,6 +440,7 @@ MODULE user_command_0100 INPUT.
 
     WHEN 'ADRES_BTN'.
 
+      "### Showing/Hiding address fields and labels.
       lv_flag_invis = 'do_change'.
       LOOP AT SCREEN.
         IF screen-group1 = '111'.
@@ -431,6 +452,7 @@ MODULE user_command_0100 INPUT.
         ENDIF.
       ENDLOOP.
 
+      "### Filling in address fields with data.
       IF cust_id_output_2 IS NOT INITIAL.
 
         SELECT
