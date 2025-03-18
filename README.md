@@ -22,8 +22,23 @@ GUI is represented by combination of two dynpro screens:
 - first representing main menu of the program with most of i/o fields, labels, one ALV grid,
 - second available as an pop-out (modal dialog box), containing two options (one closing pop-out and returning to main window, second allowing to search for entries by customer's ID) and ALV report to display search result.
 Most od data declaration and objects initialization/creation has been deployed in PBOs of used dynpros, most of options and CRUD logic implemented in PAIs.
+All the errors/confirmation messages are handled by single message class.
 
 
+## Functions
+Main screen:
+- Create - creating new customers based on 3 mandatory data: first and last name + email,
+- Search - searching for customers, possible to search through entire table when not providing any mandatory details (at this stage*),
+- Update - simple updating functions (two separate functions to update customer's mandatory data and to update address data),
+- Delete - removing customers from ZCUST_DETAILS (upon removing, customer's ID is removed from the table and stored in ZCUST_ID_STORAGE table**),
+Pop-out (changelog) screen:
+- Back - to simply allow user to go back to main screen,
+- Search - to allow searching by customer's ID***.
+
+Important notes:
+* At this stage I wanted to allow user to search the entire table in first window. By default, once shipped to production system, it would be blocked (at least one mandatory data would be a must).
+** This approach was quite the opposite of the approach from *. Program was inspired and designed to work on a table of around 30k customers. That is why I decided to not leave empty customer_IDs in the table, but to put them in another table.
+*** Because the project was developed on on-premise system with only one user, all entries are assigned to the same user. In production environment, search option could be enchanced by searching not only with customer_ID, but also with username(sy-uname).
 
 
 
