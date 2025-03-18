@@ -27,11 +27,29 @@ All the errors/confirmation messages are handled by single message class.
 
 ## Functions
 ### Main screen:
+![image](https://github.com/user-attachments/assets/afe79224-f11d-4b24-8946-8b57889ffc67)
+
+- Clear - for clearing fields of mandatory data
 - Create - creating new customers based on 3 mandatory data: first and last name + email,
 - Search - searching for customers, possible to search through entire table when not providing any mandatory details (at this stage*),
-- Update - simple updating functions (two separate functions to update customer's mandatory data and to update address data),
+- Update basic details - update customer's mandatory data,
 - Delete - removing customers from ZCUST_DETAILS (upon removing, customer's ID is removed from the table and stored in ZCUST_ID_STORAGE table**),
+- Show/hide address details - to show/hide fields and labels of address details(this is implemented mostly because I assume that not every modification will be about address data):
+
+![image](https://github.com/user-attachments/assets/d27d466a-cc47-450a-a866-e83334024cb8)
+
+Example of search:
+
+![image](https://github.com/user-attachments/assets/4b35e064-2e7d-4ea0-a2fb-9e364ea87a97)
+
+
+Please note, that ALV above, showing search results, has hotspot event implemented for ID column only.
+
+- Update address details - to update address details.
 ### Pop-out (changelog) screen:
+![image](https://github.com/user-attachments/assets/0c939758-6b39-4aef-ab26-b1734abd4ac0)
+
+
 - Back - to simply allow user to go back to main screen,
 - Search - to allow searching by customer's ID***.
 
