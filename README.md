@@ -26,12 +26,12 @@ All the errors/confirmation messages are handled by single message class.
 
 
 ## Functions
-Main screen:
+### Main screen:
 - Create - creating new customers based on 3 mandatory data: first and last name + email,
 - Search - searching for customers, possible to search through entire table when not providing any mandatory details (at this stage*),
 - Update - simple updating functions (two separate functions to update customer's mandatory data and to update address data),
 - Delete - removing customers from ZCUST_DETAILS (upon removing, customer's ID is removed from the table and stored in ZCUST_ID_STORAGE table**),
-Pop-out (changelog) screen:
+### Pop-out (changelog) screen:
 - Back - to simply allow user to go back to main screen,
 - Search - to allow searching by customer's ID***.
 
