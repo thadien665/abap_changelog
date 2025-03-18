@@ -36,9 +36,9 @@ Pop-out (changelog) screen:
 - Search - to allow searching by customer's ID***.
 
 Important notes:
-- * - At this stage I wanted to allow user to search the entire table in first window. By default, once shipped to production system, it would be blocked (at least one mandatory data would be a must).
-- ** - This approach was quite the opposite of the approach from *. Program was inspired and designed to work on a table of around 30k customers. That is why I decided to not leave empty customer_IDs in the table, but to put them in another table.
-- *** - Because the project was developed on on-premise system with only one user, all entries are assigned to the same user. In production environment, search option could be enchanced by searching not only with customer_ID, but also with username(sy-uname).
+- * At this stage I wanted to allow user to search the entire table in first window. By default, once shipped to production system, it would be blocked (at least one mandatory data would be a must).
+- ** This approach was quite the opposite of the approach from *. Program was inspired and designed to work on a table of around 30k customers. That is why I decided to not leave empty customer_IDs in the table, but to put them in another table.
+- *** Because the project was developed on on-premise system with only one user, all entries are assigned to the same user. In production environment, search option could be enchanced by searching not only with customer_ID, but also with username(sy-uname).
 
 
 
