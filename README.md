@@ -1,5 +1,7 @@
-# Abap Changelog project
+# ABAP Changelog project
+[Quick presentation :)](https://youtu.be/z3L1WhiMtHA)
 
+# Documentation
 ## Purpose
 Main goal of this project was to challenge myself and create a changelog function usable by user without access to any other transaction codes (as se16n or other DDIC tables).
 To do so, a simple program allowing user to manager customer's data was created. Changelog is showing changes made by user while managing customer's data via this program.
@@ -57,6 +59,9 @@ Important notes:
 - "*" At this stage I wanted to allow user to search the entire table in first window. By default, once shipped to production system, it would be blocked (at least one mandatory data would be a must).
 - "**" This approach was quite the opposite of the approach from *. Program was inspired and designed to work on a table of around 30k customers. That is why I decided to not leave empty customer_IDs in the table, but to put them in another table. During creation of new customer I wanted to avoid asking main table for a number, but to work on another 'storage' one.
 - "***" Because the project was developed on on-premise system with only one user, all entries are assigned to the same user. In production environment, search option could be enchanced by searching not only with customer_ID, but also with username(sy-uname).
+
+
+
 
 
 
