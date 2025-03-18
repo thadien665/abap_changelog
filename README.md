@@ -1,4 +1,4 @@
-Abap Changelog project
+# Abap Changelog project
 
 ## Purpose
 Main goal of this project was to challenge myself and create a changelog function usable by user without access to any other transaction codes (as se16n or other DDIC tables).
