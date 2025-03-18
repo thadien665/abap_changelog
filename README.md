@@ -1,4 +1,3 @@
-# abap_changelog
 Abap Changelog project
 
 ## Purpose
