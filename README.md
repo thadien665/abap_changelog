@@ -26,6 +26,75 @@ GUI is represented by combination of two dynpro screens:
 Most of data declaration and objects initialization/creation has been deployed in PBOs of used dynpros, most of options and CRUD logic implemented in PAIs.
 All the errors/confirmation messages are handled by single message class.
 
+DDIC Tables structures:
+<details>
+<summary>ZCUST_DETAILS</summary>
+  
+| Table | Field | Key | Data Element | Domain | Data type | Lenght |
+| --- | --- | --- | --- | --- | --- | --- |
+| ZCUST_DETAILS | Client | X | MANDT | MANDT | CLNT | 3 |
+|  | Cust_id | X | ZCID | ZCID_D | NUMC | 10 |
+|  | Cust_fname |  | ZCNAME | ZCNAME_D | CHAR | 20 |
+|  | Cust_lname |  | ZCNAME | ZCNAME_D | CHAR | 20 |
+|  | Cust_gender |  | ZCGENDER | ZCGENDER_D | CHAR | 1 |
+|  | Cust_email |  | ZCEMAIL | ZCEMAIL_D | CHAR | 40 |
+|  | Cust_phone |  | ZCPHONE | ZCPHONE_D | NUMC | 12 |
+|  | Cust_postal_code |  | ZCPOSTALCODE | ZCPOSTALCODE | CHAR | 10 |
+|  | Cust_street |  | ZCSTREET | ZCSTREET_D | CHAR | 50 |
+|  | Cust_home_number |  | ZCHNUMBER | ZCHNUM_D | CHAR | 10 |
+|  | Cust_aprtm_number |  | ZCANUMBER | ZCANUMBER_D | CHAR | 10 |
+|  | Cust_city |  | ZCCITY | ZDOM_CITY | CHAR | 20 |
+
+</details>
+
+<details>
+<summary>ZCUST_CHANGELOG</summary>
+
+| Table | Field | Key | Data Element | Domain | Data type | Lenght |
+| --- | --- | --- | --- | --- | --- | --- |
+| ZCUST_CHANGELOG | Client | X | MANDT | MANDT | CLNT | 3 |
+|  | Cur_user | X | ZCSYUNAME | ZDOM_SYUNAME | CHAR | 20 |
+|  | Cur_date | X | ZCDATE | ZDOM_DATE | DATS | 8 |
+|  | Cur_time | X | ZCTIME | ZDOM_TIME | TIMS | 6 |
+|  | Customer_id | X | ZCID | ZCID_D | NUMC | 10 |
+|  | Field_name | X | ZCFIELDNAME | ZDOM_FIELDNAME | CHAR | 20 |
+|  | Value_before |  | ZCVALUEMOD | ZDOM_VALUEMOD | CHAR | 50 |
+|  | Value_after |  | ZCVALUEMOD | ZDOM_VALUEMOD | CHAR | 50 |
+|  | Operation_type |  | ZCOPERNAME | ZDOM_OPERTIME | CHAR | 50 |
+
+</details>
+
+<details>
+<summary>ZCUST_ID_STORAGE</summary>
+
+| Table | Field | Key | Data Element | Domain | Data type | Lenght |
+| --- | --- | --- | --- | --- | --- | --- |
+| ZCUST_ID_STORAGE | Client | X | MANDT | MANDT | CLNT | 3 |
+|  | Customer_id | X | ZCID | ZCID_D | NUMC | 10 |
+
+</details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Functions
 ### Main screen:
