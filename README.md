@@ -74,29 +74,26 @@ DDIC Tables structures:
 
 </details>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Functions
+<details>
+<summary>Application flowchart</summary>
+  
+<details>  
+  <summary>Dynpro 1 / Main window</summary>
+  
+![dynpro 001](https://github.com/user-attachments/assets/6163d1e8-c53f-435b-8529-653c027a9eea)
+
+</details>
+
+<details>  
+  <summary>Dynpro 2 / Changelog popout</summary>
+  
+![dynpro 002](https://github.com/user-attachments/assets/c67a2e95-e520-46dd-92c9-253e0c4c8743)
+
+</details>
+
+</details>
+
 ### Main screen:
 ![image](https://github.com/user-attachments/assets/afe79224-f11d-4b24-8946-8b57889ffc67)
 
